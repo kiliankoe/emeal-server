@@ -2,16 +2,6 @@ import Vapor
 
 extension Droplet {
     func setupRoutes() throws {
-        get("hello") { req in
-            var json = JSON()
-            try json.set("hello", "world")
-            return json
-        }
-
-        get("plaintext") { req in
-            return "Hello, world!"
-        }
-
         get("update") { req in
             return "true"
         }
@@ -22,9 +12,6 @@ extension Droplet {
             return req.description
         }
 
-        get("description") { req in return req.description }
-        
-        try resource("posts", PostController.self)
         try resource("canteens", CanteenController.self)
     }
 }
