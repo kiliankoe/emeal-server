@@ -1,6 +1,27 @@
 {
     "canteens": [
         {
+            "name": "Mensa Reichenbachstraße",
+            "city": "Dresden",
+            "address": "Reichenbachstr. 1, 01069 Dresden",
+            "latitude": 51.0342255,
+            "longitude": 13.7323254
+        },
+        {
+            "name": "Zeltschlößchen",
+            "city": "Dresden",
+            "address": "Nürnberger Straße 55, 01187 Dresden",
+            "latitude": 51.031458,
+            "longitude": 13.7264826
+        },
+        {
+            "name": "Grill Cube",
+            "city": "Dresden",
+            "address": "George-Bähr-Straße 1A-E, 01069 Dresden",
+            "latitude": 51.0295376,
+            "longitude": 13.7267558
+        },
+        {
             "name": "Alte Mensa",
             "city": "Dresden",
             "address": "Mommsenstr. 13, 01069 Dresden",
@@ -8,11 +29,102 @@
             "longitude": 13.7244469
         },
         {
-            "name": "Mensa Reichenbachstraße",
+            "name": "Mensologie",
             "city": "Dresden",
-            "address": "Reichenbachstr. 1, 01069 Dresden",
-            "latitude": 51.0342255,
-            "longitude": 13.7323254
-        }
+            "address": "Blasewitzer Str. 84, 01307 Dresden",
+            "latitude": 51.0526734,
+            "longitude": 13.7819313
+        },
+        {
+            "name": "Mensa Siedepunkt",
+            "city": "Dresden",
+            "address": "Zellescher Weg 17, 01069 Dresden",
+            "latitude": 51.029416,
+            "longitude": 13.7369519
+        },
+        {
+            "name": "Mensa Johannstadt",
+            "city": "Dresden",
+            "address": "Marschnerstraße 38, 01307 Dresden",
+            "latitude": 51.0527102,
+            "longitude": 13.7587816
+        },
+        {
+            "name": "Mensa WUeins",
+            "city": "Dresden",
+            "address": "Wundtstraße 1, 01217 Dresden",
+            "latitude": 51.0298934,
+            "longitude": 13.7468513
+        },
+        {
+            "name": "Mensa Brühl",
+            "city": "Dresden",
+            "address": "Brühlsche Terrasse 1, 01067 Dresden",
+            "latitude": 51.0532443,
+            "longitude": 13.7414845
+        },
+        {
+            "name": "BioMensa U-Boot",
+            "city": "Dresden",
+            "address": "George-Bähr-Straße/Hettnerstraße 3, 01069 Dresden",
+            "latitude": 51.0302995,
+            "longitude": 13.7270123
+        },
+        {
+            "name": "Mensa TellerRandt",
+            "city": "Tharandt",
+            "address": "Pienner Straße 15, 01737 Tharandt",
+            "latitude": 50.9806983,
+            "longitude": 13.5793232
+        },
+        {
+            "name": "Mensa Zittau",
+            "city": "Zittau",
+            "address": "Hochwaldstr. 12, 02763 Zittau",
+            "latitude": 50.8908134,
+            "longitude": 14.8021313
+        },
+        {
+            "name": "Mensa Stimm-Gabel",
+            "city": "Dresden",
+            "address": "Wettiner Platz 13, 01067 Dresden",
+            "latitude": 51.0535934,
+            "longitude": 13.7229313
+        },
+        {
+            "name": "Mensa Palucca Hochschule",
+            "city": "Dresden",
+            "address": "Basteiplatz 4, 01277 Dresden",
+            "latitude": 51.0290734,
+            "longitude": 13.7686913
+        },
+        {
+            "name": "Mensa Görlitz",
+            "city": "Görlitz",
+            "address": "Furtstraße 1a, 02826 Görlitz",
+            "latitude": 51.1491083,
+            "longitude": 14.9965624
+        },
+        {
+            "name": "Mensa Sport",
+            "city": "Dresden",
+            "address": "Messering 2a, 01067 Dresden",
+            "latitude": 51.0682534,
+            "longitude": 13.7168113
+        },
+        {
+            "name": "Mensa Kreuzgymnasium",
+            "city": "Dresden",
+            "address": "Dornblüthstraße 4, 01277 Dresden",
+            "latitude": 51.0465705,
+            "longitude": 13.7997972
+        },
+        {
+            "name": "Kindertagesstätten",
+            "city": "Dresden",
+            "address": "n/a",
+            "latitude": 1.0,
+            "longitude": 1.0
+        },
     ]
 }
