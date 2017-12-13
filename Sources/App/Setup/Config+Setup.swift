@@ -20,6 +20,8 @@ extension Config {
     private func setupPreparations() throws {
         preparations.append(Post.self)
         preparations.append(Canteen.self)
+        preparations.append(Meal.self)
+        preparations.append(Menu.self)
     }
 
     // This is called after the db for canteens has been setup
