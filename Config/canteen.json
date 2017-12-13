@@ -1,0 +1,18 @@
+{
+    "canteens": [
+        {
+            "name": "Alte Mensa",
+            "city": "Dresden",
+            "address": "Mommsenstr. 13, 01069 Dresden",
+            "latitude": 51.02672,
+            "longitude": 13.7244469
+        },
+        {
+            "name": "Mensa Reichenbachstraße",
+            "city": "Dresden",
+            "address": "Reichenbachstr. 1, 01069 Dresden",
+            "latitude": 51.0342255,
+            "longitude": 13.7323254
+        }
+    ]
+}

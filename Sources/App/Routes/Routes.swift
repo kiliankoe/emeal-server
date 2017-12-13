@@ -12,6 +12,10 @@ extension Droplet {
             return "Hello, world!"
         }
 
+        get("update") { req in
+            return "true"
+        }
+
         // response to requests to /info domain
         // with a description of the request
         get("info") { req in
@@ -21,5 +25,6 @@ extension Droplet {
         get("description") { req in return req.description }
         
         try resource("posts", PostController.self)
+        try resource("canteens", CanteenController.self)
     }
 }

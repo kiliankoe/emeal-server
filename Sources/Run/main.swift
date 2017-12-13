@@ -22,4 +22,6 @@ try config.setup()
 let drop = try Droplet(config)
 try drop.setup()
 
+try config.loadCanteens()
+
 try drop.run()

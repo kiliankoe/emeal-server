@@ -19,5 +19,19 @@ extension Config {
     /// schemas prepared before the app boots
     private func setupPreparations() throws {
         preparations.append(Post.self)
+        preparations.append(Canteen.self)
+    }
+
+    // This is called after the db for canteens has been setup
+    public func loadCanteens() throws {
+        let all = self["canteen", "canteens"]?.array ?? []
+        for c in all {
+            try Canteen(name: try c.get(Canteen.Keys.name),
+                        city: try c.get(Canteen.Keys.city),
+                        address: try c.get(Canteen.Keys.address),
+                        latitude: try c.get(Canteen.Keys.latitude),
+                        longitude: try c.get(Canteen.Keys.longitude))
+                .save()
+        }
     }
 }
