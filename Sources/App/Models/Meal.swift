@@ -11,12 +11,12 @@ final class Meal: Model {
     let canteen: String
     let date: ISODate
 
-    let studentPrice: Double
-    let employeePrice: Double
+    let studentPrice: Double?
+    let employeePrice: Double?
     let image: String?
     let detailURL: String
-    let type: String
-    let counter: String
+    let type: String?
+    let counter: String?
     let ingredients: [String]
     let additives: [String]
     let allergens: [String]
@@ -25,12 +25,12 @@ final class Meal: Model {
     init(title: String,
          canteen: String,
          date: ISODate,
-         studentPrice: Double,
-         employeePrice: Double,
+         studentPrice: Double?,
+         employeePrice: Double?,
          image: String?,
          detailURL: String,
-         type: String,
-         counter: String,
+         type: String?,
+         counter: String?,
          ingredients: [String],
          additives: [String],
          allergens: [String],
@@ -108,12 +108,12 @@ extension Meal: Preparation {
             builder.string(Keys.title)
             builder.string(Keys.canteen)
             builder.string(Keys.date)
-            builder.double(Keys.studentPrice)
-            builder.double(Keys.employeePrice)
-            builder.string(Keys.image)
+            builder.double(Keys.studentPrice, optional: true)
+            builder.double(Keys.employeePrice, optional: true)
+            builder.string(Keys.image, optional: true)
             builder.string(Keys.detailURL)
-            builder.string(Keys.type)
-            builder.string(Keys.counter)
+            builder.string(Keys.type, optional: true)
+            builder.string(Keys.counter, optional: true)
 //            builder.string(Keys.ingredients)
 //            builder.string(Keys.additives)
 //            builder.string(Keys.allergens)
