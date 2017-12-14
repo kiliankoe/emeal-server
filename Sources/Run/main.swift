@@ -23,5 +23,6 @@ let drop = try Droplet(config)
 try drop.setup()
 
 try config.loadCanteens()
+try drop.setupDummyMeals()
 
 try drop.run()
