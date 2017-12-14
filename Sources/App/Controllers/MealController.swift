@@ -5,7 +5,10 @@ final class MealController: ResourceRepresentable {
     typealias Model = Canteen
 
     func index(_ req: Request) throws -> ResponseRepresentable {
-        return try Meal.all().makeJSON() // TODO: current day only maybe?
+        return try Meal
+            .all()
+            .filter { $0.date == Date().dateStamp }
+            .makeJSON()
     }
 
     func show(_ req: Request, canteen: Canteen) throws -> ResponseRepresentable {
