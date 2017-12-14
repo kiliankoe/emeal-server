@@ -2,14 +2,18 @@ import Vapor
 import FluentProvider
 import HTTP
 
+typealias ISODate = String
+
 final class Meal: Model {
     let storage = Storage()
 
     let title: String
+    let canteen: String
+    let date: ISODate
+
     let studentPrice: Double
     let employeePrice: Double
     let image: String?
-    let canteen: String
     let detailURL: String
     let type: String
     let counter: String
@@ -19,10 +23,11 @@ final class Meal: Model {
     let notes: [String]
 
     init(title: String,
+         canteen: String,
+         date: ISODate,
          studentPrice: Double,
          employeePrice: Double,
          image: String?,
-         canteen: String,
          detailURL: String,
          type: String,
          counter: String,
@@ -31,10 +36,11 @@ final class Meal: Model {
          allergens: [String],
          notes: [String]) {
             self.title = title
+            self.canteen = canteen
+            self.date = date
             self.studentPrice = studentPrice
             self.employeePrice = employeePrice
             self.image = image
-            self.canteen = canteen
             self.detailURL = detailURL
             self.type = type
             self.counter = counter
@@ -46,10 +52,11 @@ final class Meal: Model {
 
     enum Keys {
         static let title = "title"
+        static let canteen = "canteen"
+        static let date = "date"
         static let studentPrice = "studentPrice"
         static let employeePrice = "employeePrice"
         static let image = "image"
-        static let canteen = "canteen"
         static let detailURL = "detailURL"
         static let type = "type"
         static let counter = "counter"
@@ -62,10 +69,11 @@ final class Meal: Model {
     func makeRow() throws -> Row {
         var row = Row()
         try row.set(Keys.title, self.title)
+        try row.set(Keys.canteen, self.canteen)
+        try row.set(Keys.date, self.date)
         try row.set(Keys.studentPrice, self.studentPrice)
         try row.set(Keys.employeePrice, self.employeePrice)
         try row.set(Keys.image, self.image)
-        try row.set(Keys.canteen, self.canteen)
         try row.set(Keys.detailURL, self.detailURL)
         try row.set(Keys.type, self.type)
         try row.set(Keys.counter, self.counter)
@@ -78,17 +86,18 @@ final class Meal: Model {
 
     init(row: Row) throws {
         self.title = try row.get(Keys.title)
+        self.canteen = try row.get(Keys.canteen)
+        self.date = try row.get(Keys.date)
         self.studentPrice = try row.get(Keys.studentPrice)
         self.employeePrice = try row.get(Keys.employeePrice)
         self.image = try row.get(Keys.image)
-        self.canteen = try row.get(Keys.canteen)
         self.detailURL = try row.get(Keys.detailURL)
         self.type = try row.get(Keys.type)
         self.counter = try row.get(Keys.counter)
-        self.ingredients = try row.get(Keys.ingredients)
-        self.additives = try row.get(Keys.additives)
-        self.allergens = try row.get(Keys.allergens)
-        self.notes = try row.get(Keys.notes)
+//        self.ingredients = try row.get(Keys.ingredients)
+//        self.additives = try row.get(Keys.additives)
+//        self.allergens = try row.get(Keys.allergens)
+//        self.notes = try row.get(Keys.notes)
     }
 }
 
@@ -97,10 +106,11 @@ extension Meal: Preparation {
         try database.create(self) { builder in
             builder.id()
             builder.string(Keys.title)
+            builder.string(Keys.canteen)
+            builder.string(Keys.date)
             builder.double(Keys.studentPrice)
             builder.double(Keys.employeePrice)
             builder.string(Keys.image)
-            builder.string(Keys.canteen)
             builder.string(Keys.detailURL)
             builder.string(Keys.type)
             builder.string(Keys.counter)
@@ -120,11 +130,11 @@ extension Meal: JSONConvertible {
     func makeJSON() throws -> JSON {
         var json = JSON()
         try json.set(Keys.title, self.title)
-        try json.set(Keys.title, self.title)
+        try json.set(Keys.canteen, self.canteen)
+        try json.set(Keys.date, self.date)
         try json.set(Keys.studentPrice, self.studentPrice)
         try json.set(Keys.employeePrice, self.employeePrice)
         try json.set(Keys.image, self.image)
-        try json.set(Keys.canteen, self.canteen)
         try json.set(Keys.detailURL, self.detailURL)
         try json.set(Keys.type, self.type)
         try json.set(Keys.counter, self.counter)
@@ -137,10 +147,11 @@ extension Meal: JSONConvertible {
 
     convenience init(json: JSON) throws {
         self.init(title: try json.get(Keys.title),
+                  canteen: try json.get(Keys.canteen),
+                  date: try json.get(Keys.date),
                   studentPrice: try json.get(Keys.studentPrice),
                   employeePrice: try json.get(Keys.employeePrice),
                   image: try json.get(Keys.image),
-                  canteen: try json.get(Keys.canteen),
                   detailURL: try json.get(Keys.detailURL),
                   type: try json.get(Keys.type),
                   counter: try json.get(Keys.counter),
