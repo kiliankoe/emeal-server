@@ -13,5 +13,6 @@ extension Droplet {
         }
 
         try resource("canteens", CanteenController.self)
+        try resource("meals", MealController.self)
     }
 }
