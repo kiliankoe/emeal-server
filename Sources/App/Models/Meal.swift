@@ -77,10 +77,10 @@ final class Meal: Model {
         try row.set(Keys.detailURL, self.detailURL)
         try row.set(Keys.type, self.type)
         try row.set(Keys.counter, self.counter)
-        try row.set(Keys.ingredients, self.ingredients)
-        try row.set(Keys.additives, self.additives)
-        try row.set(Keys.allergens, self.allergens)
-        try row.set(Keys.notes, self.notes)
+//        try row.set(Keys.ingredients, self.ingredients)
+//        try row.set(Keys.additives, self.additives)
+//        try row.set(Keys.allergens, self.allergens)
+//        try row.set(Keys.notes, self.notes)
         return row
     }
 
@@ -98,6 +98,10 @@ final class Meal: Model {
 //        self.additives = try row.get(Keys.additives)
 //        self.allergens = try row.get(Keys.allergens)
 //        self.notes = try row.get(Keys.notes)
+        self.ingredients = []
+        self.additives = []
+        self.allergens = []
+        self.notes = []
     }
 }
 
