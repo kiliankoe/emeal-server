@@ -128,6 +128,15 @@
         }
       },
       {
+        "package": "Regex",
+        "repositoryURL": "https://github.com/sharplet/Regex",
+        "state": {
+          "branch": null,
+          "revision": "3e671ed911b467c0d9c05e56f03d9e5bcb535f39",
+          "version": "1.1.0"
+        }
+      },
+      {
         "package": "Routing",
         "repositoryURL": "https://github.com/vapor/routing.git",
         "state": {
@@ -152,6 +161,15 @@
           "branch": null,
           "revision": "f6b06982e94db71227e99c56fec5899a8526e8ad",
           "version": "2.1.0"
+        }
+      },
+      {
+        "package": "SwiftSoup",
+        "repositoryURL": "https://github.com/scinfu/SwiftSoup.git",
+        "state": {
+          "branch": null,
+          "revision": "cebd4851bcc8a0d0fedebdafca820303073280a9",
+          "version": "1.5.9"
         }
       },
       {
