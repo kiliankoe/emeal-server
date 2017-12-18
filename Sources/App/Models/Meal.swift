@@ -15,8 +15,6 @@ final class Meal: Model {
     let employeePrice: Double?
     let image: String?
     let detailURL: String
-    let type: String?
-    let counter: String?
     let ingredients: [String]
     let additives: [String]
     let allergens: [String]
@@ -29,8 +27,6 @@ final class Meal: Model {
          employeePrice: Double?,
          image: String?,
          detailURL: String,
-         type: String?,
-         counter: String?,
          ingredients: [String],
          additives: [String],
          allergens: [String],
@@ -42,8 +38,6 @@ final class Meal: Model {
             self.employeePrice = employeePrice
             self.image = image
             self.detailURL = detailURL
-            self.type = type
-            self.counter = counter
             self.ingredients = ingredients
             self.additives = additives
             self.allergens = allergens
@@ -58,8 +52,6 @@ final class Meal: Model {
         static let employeePrice = "employeePrice"
         static let image = "image"
         static let detailURL = "detailURL"
-        static let type = "type"
-        static let counter = "counter"
         static let ingredients = "ingredients"
         static let additives = "additives"
         static let allergens = "allergens"
@@ -75,8 +67,6 @@ final class Meal: Model {
         try row.set(Keys.employeePrice, self.employeePrice)
         try row.set(Keys.image, self.image)
         try row.set(Keys.detailURL, self.detailURL)
-        try row.set(Keys.type, self.type)
-        try row.set(Keys.counter, self.counter)
 //        try row.set(Keys.ingredients, self.ingredients)
 //        try row.set(Keys.additives, self.additives)
 //        try row.set(Keys.allergens, self.allergens)
@@ -92,8 +82,6 @@ final class Meal: Model {
         self.employeePrice = try row.get(Keys.employeePrice)
         self.image = try row.get(Keys.image)
         self.detailURL = try row.get(Keys.detailURL)
-        self.type = try row.get(Keys.type)
-        self.counter = try row.get(Keys.counter)
 //        self.ingredients = try row.get(Keys.ingredients)
 //        self.additives = try row.get(Keys.additives)
 //        self.allergens = try row.get(Keys.allergens)
@@ -116,8 +104,6 @@ extension Meal: Preparation {
             builder.double(Keys.employeePrice, optional: true)
             builder.string(Keys.image, optional: true)
             builder.string(Keys.detailURL)
-            builder.string(Keys.type, optional: true)
-            builder.string(Keys.counter, optional: true)
 //            builder.string(Keys.ingredients)
 //            builder.string(Keys.additives)
 //            builder.string(Keys.allergens)
@@ -140,8 +126,6 @@ extension Meal: JSONConvertible {
         try json.set(Keys.employeePrice, self.employeePrice)
         try json.set(Keys.image, self.image)
         try json.set(Keys.detailURL, self.detailURL)
-        try json.set(Keys.type, self.type)
-        try json.set(Keys.counter, self.counter)
         try json.set(Keys.ingredients, self.ingredients)
         try json.set(Keys.additives, self.additives)
         try json.set(Keys.allergens, self.allergens)
@@ -157,8 +141,6 @@ extension Meal: JSONConvertible {
                   employeePrice: try json.get(Keys.employeePrice),
                   image: try json.get(Keys.image),
                   detailURL: try json.get(Keys.detailURL),
-                  type: try json.get(Keys.type),
-                  counter: try json.get(Keys.counter),
                   ingredients: try json.get(Keys.ingredients),
                   additives: try json.get(Keys.additives),
                   allergens: try json.get(Keys.allergens),
