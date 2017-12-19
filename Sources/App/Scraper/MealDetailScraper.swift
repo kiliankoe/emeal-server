@@ -20,9 +20,10 @@ final class MealDetailScraper {
         return (studentsPrice ?? 0, employeePrice ?? 0)
     }
 
-    func extractImageURL(from doc: Document) -> String {
-        let img = (try? doc.getElementById("essenfoto")?.attr("href") ?? "") ?? ""
-        return "https:\(img)"
+    func extractImageURL(from doc: Document) -> String? {
+        let img = (try? doc.select("#essenbild img").attr("src")) ?? ""
+        guard !img.contains("noimage.png") else { return nil }
+        return "https:\(img)".replacingOccurrences(of: "thumbs/", with: "")
     }
 
     private func extractInfos(at pos: Int, from doc: Document) -> [String] {

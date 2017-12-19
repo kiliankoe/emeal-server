@@ -34,7 +34,7 @@ class MealDetailScraperTests: XCTestCase {
         let imgURL1 = scraper.extractImageURL(from: document1)
         XCTAssertEqual(imgURL1, "https://bilderspeiseplan.studentenwerk-dresden.de/m18/201712/196257.jpg?date=201712181137")
         let imgURL2 = scraper.extractImageURL(from: document2)
-        XCTAssertEqual(imgURL2, "")
+        XCTAssertNil(imgURL2)
     }
 
     func testExtractIngredients() {
