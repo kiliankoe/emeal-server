@@ -37,6 +37,10 @@ final class MealDetailScraper {
         return extractInfos(at: 0, from: doc)
     }
 
+    func extractAdditives(from doc: Document) -> [String] {
+        return []
+    }
+
     func extractAllergens(from doc: Document) -> [String] {
         return extractInfos(at: 1, from: doc)
     }
