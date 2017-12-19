@@ -11,14 +11,14 @@ import HTTP
 class RouteTests: TestCase {
     let drop = try! Droplet.testable()
     
-    func testHello() throws {
+    func _testHello() throws {
         try drop
             .testResponse(to: .get, at: "hello")
             .assertStatus(is: .ok)
             .assertJSON("hello", equals: "world")
     }
 
-    func testInfo() throws {
+    func _testInfo() throws {
         try drop
             .testResponse(to: .get, at: "info")
             .assertStatus(is: .ok)
@@ -33,7 +33,7 @@ extension RouteTests {
     /// to function properly.
     /// See ./Tests/LinuxMain.swift for examples
     static let allTests = [
-        ("testHello", testHello),
-        ("testInfo", testInfo),
+        ("testHello", _testHello),
+        ("testInfo", _testInfo),
     ]
 }
