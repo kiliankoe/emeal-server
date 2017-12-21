@@ -22,15 +22,15 @@ enum Day: Int {
 }
 
 final class MenuScraper {
-    func menuURL(forWeek week: Week, andDay day: Day) -> URL {
+    static func menuURL(forWeek week: Week, andDay day: Day) -> URL {
         return URL(string: "https://www.studentenwerk-dresden.de/mensen/speiseplan/w\(week.rawValue)-d\(day.rawValue).html")!
     }
 
-    func extractMenus(from doc: Document) -> Elements? {
+    static func extractMenus(from doc: Document) -> Elements? {
         return try? doc.getElementsByClass("speiseplan")
     }
 
-    func parseMenu(_ menu: Element) -> (canteen: String, meals: [String]) {
+    static func parseMenu(_ menu: Element) -> (canteen: String, meals: [String]) {
         let rows = try? menu.select("tr")
         let canteen = ((try? rows?.first()?.select("th").first()?.text() ?? "") ?? "").replacingOccurrences(of: "Angebote ", with: "")
 
