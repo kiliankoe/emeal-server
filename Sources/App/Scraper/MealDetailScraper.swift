@@ -2,28 +2,6 @@ import Foundation
 import SwiftSoup
 import Regex
 
-private enum InfoSection: String {
-    case ingredients = "informationen"
-    case additives = "zusatzstoffe"
-    case allergens = "allergene"
-    case unknown // placeholder for other possible section headers
-
-    init(string: String) {
-        let str = string.lowercased()
-        if str.contains(InfoSection.ingredients.rawValue) {
-            self = .ingredients
-            return
-        } else if str.contains(InfoSection.additives.rawValue) {
-            self = .additives
-            return
-        } else if str.contains(InfoSection.allergens.rawValue) {
-            self = .allergens
-            return
-        }
-        self = .unknown
-    }
-}
-
 final class MealDetailScraper {
     static func extractTitle(from doc: Document) -> String {
         return (try? doc.getElementById("speiseplanessentext").flatMap { try $0.text() } ?? "") ?? ""
@@ -88,5 +66,27 @@ final class MealDetailScraper {
 
         // TODO
         return Meal(title: title, canteen: "", date: "2017-12-19", studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: "", ingredients: ingredients, additives: additives, allergens: allergens)
+    }
+}
+
+private enum InfoSection: String {
+    case ingredients = "informationen"
+    case additives = "zusatzstoffe"
+    case allergens = "allergene"
+    case unknown // placeholder for other possible section headers
+
+    init(string: String) {
+        let str = string.lowercased()
+        if str.contains(InfoSection.ingredients.rawValue) {
+            self = .ingredients
+            return
+        } else if str.contains(InfoSection.additives.rawValue) {
+            self = .additives
+            return
+        } else if str.contains(InfoSection.allergens.rawValue) {
+            self = .allergens
+            return
+        }
+        self = .unknown
     }
 }

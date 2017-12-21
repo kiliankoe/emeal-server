@@ -1,26 +1,6 @@
 import Foundation
 import SwiftSoup
 
-enum Week: Int {
-    case current = 0
-    case next
-    case afterNext
-
-    static let all: [Week] = [.current, .next, .afterNext]
-}
-
-enum Day: Int {
-    case sunday = 0
-    case monday
-    case tuesday
-    case wednesday
-    case thursday
-    case friday
-    case saturday
-
-    static let all: [Day] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
-}
-
 final class MenuScraper {
     static func menuURL(forWeek week: Week, andDay day: Day) -> URL {
         return URL(string: "https://www.studentenwerk-dresden.de/mensen/speiseplan/w\(week.rawValue)-d\(day.rawValue).html")!
@@ -43,6 +23,24 @@ final class MenuScraper {
 
         return (canteen, meals)
     }
+}
 
-    
+enum Week: Int {
+    case current = 0
+    case next
+    case afterNext
+
+    static let all: [Week] = [.current, .next, .afterNext]
+}
+
+enum Day: Int {
+    case sunday = 0
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+    case saturday
+
+    static let all: [Day] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
 }
