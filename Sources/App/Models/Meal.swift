@@ -18,7 +18,6 @@ final class Meal: Model {
     let ingredients: [String]
     let additives: [String]
     let allergens: [String]
-    let notes: [String]
 
     init(title: String,
          canteen: String,
@@ -29,8 +28,7 @@ final class Meal: Model {
          detailURL: String,
          ingredients: [String],
          additives: [String],
-         allergens: [String],
-         notes: [String]) {
+         allergens: [String]) {
             self.title = title
             self.canteen = canteen
             self.date = date
@@ -41,7 +39,6 @@ final class Meal: Model {
             self.ingredients = ingredients
             self.additives = additives
             self.allergens = allergens
-            self.notes = notes
     }
 
     enum Keys {
@@ -55,7 +52,6 @@ final class Meal: Model {
         static let ingredients = "ingredients"
         static let additives = "additives"
         static let allergens = "allergens"
-        static let notes = "notes"
     }
 
     func makeRow() throws -> Row {
@@ -70,7 +66,6 @@ final class Meal: Model {
 //        try row.set(Keys.ingredients, self.ingredients)
 //        try row.set(Keys.additives, self.additives)
 //        try row.set(Keys.allergens, self.allergens)
-//        try row.set(Keys.notes, self.notes)
         return row
     }
 
@@ -85,11 +80,9 @@ final class Meal: Model {
 //        self.ingredients = try row.get(Keys.ingredients)
 //        self.additives = try row.get(Keys.additives)
 //        self.allergens = try row.get(Keys.allergens)
-//        self.notes = try row.get(Keys.notes)
         self.ingredients = []
         self.additives = []
         self.allergens = []
-        self.notes = []
     }
 }
 
@@ -107,7 +100,6 @@ extension Meal: Preparation {
 //            builder.string(Keys.ingredients)
 //            builder.string(Keys.additives)
 //            builder.string(Keys.allergens)
-//            builder.string(Keys.notes)
         }
     }
 
@@ -129,7 +121,6 @@ extension Meal: JSONConvertible {
         try json.set(Keys.ingredients, self.ingredients)
         try json.set(Keys.additives, self.additives)
         try json.set(Keys.allergens, self.allergens)
-        try json.set(Keys.notes, self.notes)
         return json
     }
 
@@ -143,8 +134,7 @@ extension Meal: JSONConvertible {
                   detailURL: try json.get(Keys.detailURL),
                   ingredients: try json.get(Keys.ingredients),
                   additives: try json.get(Keys.additives),
-                  allergens: try json.get(Keys.allergens),
-                  notes: try json.get(Keys.notes))
+                  allergens: try json.get(Keys.allergens))
     }
 }
 

@@ -82,7 +82,11 @@ final class MealDetailScraper {
         let (studentPrice, employeePrice) = MealDetailScraper.extractPrices(from: document)
         let imgURL = MealDetailScraper.extractImageURL(from: document)
 
+        let ingredients = MealDetailScraper.extractIngredients(from: document)
+        let additives = MealDetailScraper.extractAdditives(from: document)
+        let allergens = MealDetailScraper.extractAllergens(from: document)
+
         // TODO
-        return Meal(title: title, canteen: "", date: "2017-12-19", studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: "", ingredients: [], additives: [], allergens: [], notes: [])
+        return Meal(title: title, canteen: "", date: "2017-12-19", studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: "", ingredients: ingredients, additives: additives, allergens: allergens)
     }
 }
