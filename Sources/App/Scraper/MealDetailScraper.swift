@@ -25,11 +25,11 @@ enum InfoSection: String {
 }
 
 final class MealDetailScraper {
-    func extractTitle(from doc: Document) -> String {
+    static func extractTitle(from doc: Document) -> String {
         return (try? doc.getElementById("speiseplanessentext").flatMap { try $0.text() } ?? "") ?? ""
     }
 
-    func extractPrices(from doc: Document) -> (students: Double?, employees: Double?) {
+    static func extractPrices(from doc: Document) -> (students: Double?, employees: Double?) {
         let prices = (try? doc.getElementById("preise")?.text() ?? "") ?? ""
         let digitsRegex = Regex("(\\d.,?\\s?\\d.)")
         let digits = digitsRegex.allMatches(in: prices).map { $0.captures[0] }
@@ -42,18 +42,18 @@ final class MealDetailScraper {
         return (studentsPrice ?? 0, employeePrice ?? 0)
     }
 
-    func extractImageURL(from doc: Document) -> String? {
+    static func extractImageURL(from doc: Document) -> String? {
         let img = (try? doc.select("#essenbild img").attr("src")) ?? ""
         guard !img.contains("noimage.png") else { return nil }
         return "https:\(img)".replacingOccurrences(of: "thumbs/", with: "")
     }
 
-    func extractInfoHeaders(from doc: Document) -> [InfoSection] {
+    private static func extractInfoHeaders(from doc: Document) -> [InfoSection] {
         guard let infos = try? doc.select("#speiseplandetailsrechts>h2") else { return [] }
         return infos.flatMap { InfoSection(string: try? $0.text()) }
     }
 
-    private func extractInfos(at section: InfoSection, from doc: Document) -> [String] {
+    private static func extractInfos(at section: InfoSection, from doc: Document) -> [String] {
         let infoSections = extractInfoHeaders(from: doc)
         guard let secIdx = infoSections.index(of: section) else { return [] }
         let sectionIdx = Int(secIdx)
@@ -65,22 +65,22 @@ final class MealDetailScraper {
         return values
     }
 
-    func extractIngredients(from doc: Document) -> [String] {
+    static func extractIngredients(from doc: Document) -> [String] {
         return extractInfos(at: .ingredients, from: doc)
     }
 
-    func extractAdditives(from doc: Document) -> [String] {
+    static func extractAdditives(from doc: Document) -> [String] {
         return extractInfos(at: .additives, from: doc)
     }
 
-    func extractAllergens(from doc: Document) -> [String] {
+    static func extractAllergens(from doc: Document) -> [String] {
         return extractInfos(at: .allergens, from: doc)
     }
 
     public func scrape(document: Document) -> Meal? {
-        let title = self.extractTitle(from: document)
-        let (studentPrice, employeePrice) = self.extractPrices(from: document)
-        let imgURL = self.extractImageURL(from: document)
+        let title = MealDetailScraper.extractTitle(from: document)
+        let (studentPrice, employeePrice) = MealDetailScraper.extractPrices(from: document)
+        let imgURL = MealDetailScraper.extractImageURL(from: document)
 
         // TODO
         return Meal(title: title, canteen: "", date: "2017-12-19", studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: "", ingredients: [], additives: [], allergens: [], notes: [])
