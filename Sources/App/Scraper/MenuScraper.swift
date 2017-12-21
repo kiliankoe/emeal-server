@@ -50,3 +50,9 @@ enum Day: Int {
 
     static let all: [Day] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
 }
+
+func isodate(forDay day: Day, inWeek week: Week) -> ISODate {
+    let comp = Calendar(identifier: .gregorian).dateComponents([.weekday, .day, .month, .year], from: Date())
+    // TODO
+    return "2017-12-21"
+}
