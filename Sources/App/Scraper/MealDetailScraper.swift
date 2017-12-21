@@ -2,6 +2,28 @@ import Foundation
 import SwiftSoup
 import Regex
 
+enum InfoSection: String {
+    case ingredients = "informationen"
+    case additives = "zusatzstoffe"
+    case allergens = "allergene"
+
+    init?(string: String?) {
+        guard let string = string else { return nil }
+        let str = string.lowercased()
+        if str.contains(InfoSection.ingredients.rawValue) {
+            self = .ingredients
+            return
+        } else if str.contains(InfoSection.additives.rawValue) {
+            self = .additives
+            return
+        } else if str.contains(InfoSection.allergens.rawValue) {
+            self = .allergens
+            return
+        }
+        return nil
+    }
+}
+
 final class MealDetailScraper {
     func extractTitle(from doc: Document) -> String {
         return (try? doc.getElementById("speiseplanessentext").flatMap { try $0.text() } ?? "") ?? ""
@@ -26,24 +48,33 @@ final class MealDetailScraper {
         return "https:\(img)".replacingOccurrences(of: "thumbs/", with: "")
     }
 
-    private func extractInfos(at pos: Int, from doc: Document) -> [String] {
+    func extractInfoHeaders(from doc: Document) -> [InfoSection] {
+        guard let infos = try? doc.select("#speiseplandetailsrechts>h2") else { return [] }
+        return infos.flatMap { InfoSection(string: try? $0.text()) }
+    }
+
+    private func extractInfos(at section: InfoSection, from doc: Document) -> [String] {
+        let infoSections = extractInfoHeaders(from: doc)
+        guard let secIdx = infoSections.index(of: section) else { return [] }
+        let sectionIdx = Int(secIdx)
+
         guard let infos = try? doc.getElementsByClass("speiseplaninfos") else { return [] }
-        let sectionBlock = pos == 0 ? infos.first() : infos.last()
-        guard let _listItems = try? sectionBlock?.select("li"), let listItems = _listItems else { return [] }
+        let sectionBlock = infos.get(sectionIdx)
+        guard let listItems = try? sectionBlock.select("li") else { return [] }
         guard let values = try? listItems.map({ try $0.text() }) else { return [] }
         return values
     }
 
     func extractIngredients(from doc: Document) -> [String] {
-        return extractInfos(at: 0, from: doc)
+        return extractInfos(at: .ingredients, from: doc)
     }
 
     func extractAdditives(from doc: Document) -> [String] {
-        return []
+        return extractInfos(at: .additives, from: doc)
     }
 
     func extractAllergens(from doc: Document) -> [String] {
-        return extractInfos(at: 1, from: doc)
+        return extractInfos(at: .allergens, from: doc)
     }
 
     public func scrape(document: Document) -> Meal? {
