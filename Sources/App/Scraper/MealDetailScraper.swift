@@ -6,9 +6,9 @@ enum InfoSection: String {
     case ingredients = "informationen"
     case additives = "zusatzstoffe"
     case allergens = "allergene"
+    case unknown // placeholder for other possible section headers
 
-    init?(string: String?) {
-        guard let string = string else { return nil }
+    init(string: String) {
         let str = string.lowercased()
         if str.contains(InfoSection.ingredients.rawValue) {
             self = .ingredients
@@ -20,7 +20,7 @@ enum InfoSection: String {
             self = .allergens
             return
         }
-        return nil
+        self = .unknown
     }
 }
 
@@ -50,7 +50,7 @@ final class MealDetailScraper {
 
     private static func extractInfoHeaders(from doc: Document) -> [InfoSection] {
         guard let infos = try? doc.select("#speiseplandetailsrechts>h2") else { return [] }
-        return infos.flatMap { InfoSection(string: try? $0.text()) }
+        return infos.map { InfoSection(string: (try? $0.text()) ?? "") }
     }
 
     private static func extractInfos(at section: InfoSection, from doc: Document) -> [String] {
