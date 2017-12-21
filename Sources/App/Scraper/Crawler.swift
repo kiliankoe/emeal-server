@@ -30,7 +30,11 @@ class Crawler {
                         print("❌ Failed parsing content for \(url). Skipping.")
                         continue
                     }
+
+                    let knownCanteens = (try? Canteen.all()) ?? []
                     let menus = MenuScraper.extractCanteensAndMeals(from: document)
+                        .filter { menu in knownCanteens.contains { $0.name == menu.canteen } }
+
                     for menu in menus {
                         let date = isodate(forDay: day, inWeek: week)
                         let mealJobs = menu.meals.flatMap { urlStr -> Job? in
