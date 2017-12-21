@@ -77,7 +77,7 @@ final class MealDetailScraper {
         return extractInfos(at: .allergens, from: doc)
     }
 
-    public func scrape(document: Document) -> Meal? {
+    public static func scrape(document: Document) -> Meal? {
         let title = MealDetailScraper.extractTitle(from: document)
         let (studentPrice, employeePrice) = MealDetailScraper.extractPrices(from: document)
         let imgURL = MealDetailScraper.extractImageURL(from: document)
