@@ -55,7 +55,7 @@ final class MealDetailScraper {
         return extractInfos(at: .allergens, from: doc)
     }
 
-    public static func scrape(document: Document) -> Meal {
+    public static func scrape(document: Document, fromCanteen canteen: String, onDate date: ISODate, url: String) -> Meal {
         let title = MealDetailScraper.extractTitle(from: document)
         let (studentPrice, employeePrice) = MealDetailScraper.extractPrices(from: document)
         let imgURL = MealDetailScraper.extractImageURL(from: document)
@@ -64,8 +64,7 @@ final class MealDetailScraper {
         let additives = MealDetailScraper.extractAdditives(from: document)
         let allergens = MealDetailScraper.extractAllergens(from: document)
 
-        // TODO
-        return Meal(title: title, canteen: "", date: "2017-12-19", studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: "", ingredients: ingredients, additives: additives, allergens: allergens)
+        return Meal(title: title, canteen: canteen, date: date, studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: url, ingredients: ingredients, additives: additives, allergens: allergens)
     }
 }
 
