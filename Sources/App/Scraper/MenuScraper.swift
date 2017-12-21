@@ -23,6 +23,12 @@ final class MenuScraper {
 
         return (canteen, meals)
     }
+
+    static func extractCanteensAndMeals(from doc: Document) -> [(canteen: String, meals: [String])] {
+        return MenuScraper.extractMenus(from: doc)?
+            .map(MenuScraper.parseMenu)
+            ?? []
+    }
 }
 
 enum Week: Int {
