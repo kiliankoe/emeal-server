@@ -2,7 +2,7 @@ import Foundation
 import SwiftSoup
 import Regex
 
-enum InfoSection: String {
+private enum InfoSection: String {
     case ingredients = "informationen"
     case additives = "zusatzstoffe"
     case allergens = "allergene"
