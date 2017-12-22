@@ -68,7 +68,11 @@ class Crawler {
     private func fetch(url: URL) -> String? {
         let sema = DispatchSemaphore(value: 0)
         var body: String?
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+
+        let task = session.dataTask(with: url) { data, response, error in
             guard
                 error == nil,
                 let data = data,
