@@ -5,17 +5,17 @@ final class MealController: ResourceRepresentable {
     typealias Model = Canteen
 
     func index(_ req: Request) throws -> ResponseRepresentable {
-        return try Meal
-            .all()
-            .filter { $0.date == Date().dateStamp }
-            .makeJSON()
+        let query = try Meal.makeQuery()
+        try query.filter(Meal.Keys.date, Date().dateStamp)
+        try query.sort(Meal.Keys.canteen, .ascending)
+        return try query.all().makeJSON()
     }
 
     func show(_ req: Request, canteen: Canteen) throws -> ResponseRepresentable {
-        return try Meal
-            .all()
-            .filter { $0.canteen == canteen.name }
-            .makeJSON()
+        let query = try Meal.makeQuery()
+        try query.filter(Meal.Keys.canteen, canteen.name)
+        try query.sort(Meal.Keys.date, .ascending)
+        return try query.all().makeJSON()
     }
 
     func makeResource() -> Resource<Canteen> {
