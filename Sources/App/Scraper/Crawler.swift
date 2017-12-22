@@ -33,7 +33,7 @@ class Crawler {
 
                     let knownCanteens = (try? Canteen.all()) ?? []
                     let menus = MenuScraper.extractCanteensAndMeals(from: document)
-                        .filter { menu in knownCanteens.contains { $0.name == menu.canteen } }
+                        .filter { menu in knownCanteens.contains { $0.name.lowercased() == menu.canteen.lowercased() } }
 
                     for menu in menus {
                         let date = isodate(forDay: day, inWeek: week)
