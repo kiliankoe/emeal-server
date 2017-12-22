@@ -18,6 +18,7 @@ final class MenuScraper {
             .dropFirst()
             .map { try $0.select("a").first()?.attr("href") ?? "" }
             .filter { !$0.isEmpty }
+            .filter { $0 != "#" }
             .map { "https://www.studentenwerk-dresden.de/mensen/speiseplan/\($0)" }
             ?? []) ?? []
 
