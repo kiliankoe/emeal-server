@@ -23,6 +23,6 @@ let drop = try Droplet(config)
 try drop.setup()
 
 try config.loadCanteens()
-try drop.initialFetchAll()
+drop.initialFetchAll()
 
 try drop.run()
