@@ -44,7 +44,7 @@ class Crawler {
                             }
                             return Job.meal(canteen: menu.canteen, date: date, url: url)
                         }
-                        print("Added \(mealJobs.count) meal download jobs to queue.")
+                        print("Added \(mealJobs.count) meal download jobs to queue for canteen \(menu.canteen).")
                         queue.append(contentsOf: mealJobs)
                     }
                 case .meal(canteen: let canteen, date: let date, url: let url):
