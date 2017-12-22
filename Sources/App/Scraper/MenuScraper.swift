@@ -12,7 +12,9 @@ final class MenuScraper {
 
     static func parseMenu(_ menu: Element) -> (canteen: String, meals: [String]) {
         let rows = try? menu.select("tr")
-        let canteen = ((try? rows?.first()?.select("th").first()?.text() ?? "") ?? "").replacingOccurrences(of: "Angebote ", with: "")
+        let canteen = ((try? rows?.first()?.select("th").first()?.text() ?? "") ?? "")
+            .replacingOccurrences(of: "Angebote ", with: "")
+            .replacingOccurrences(of: " (Bio-Code-Nummer: DE-ÖKO-021)", with: "") // yay for edgecases
 
         let meals = (try? rows?
             .dropFirst()
