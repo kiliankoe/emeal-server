@@ -63,9 +63,9 @@ final class Meal: Model {
         try row.set(Keys.employeePrice, self.employeePrice)
         try row.set(Keys.image, self.image)
         try row.set(Keys.detailURL, self.detailURL)
-//        try row.set(Keys.ingredients, self.ingredients)
-//        try row.set(Keys.additives, self.additives)
-//        try row.set(Keys.allergens, self.allergens)
+        try row.set(Keys.ingredients, self.ingredients.semicolonStr)
+        try row.set(Keys.additives, self.additives.semicolonStr)
+        try row.set(Keys.allergens, self.allergens.semicolonStr)
         return row
     }
 
@@ -77,12 +77,15 @@ final class Meal: Model {
         self.employeePrice = try row.get(Keys.employeePrice)
         self.image = try row.get(Keys.image)
         self.detailURL = try row.get(Keys.detailURL)
-//        self.ingredients = try row.get(Keys.ingredients)
-//        self.additives = try row.get(Keys.additives)
-//        self.allergens = try row.get(Keys.allergens)
-        self.ingredients = []
-        self.additives = []
-        self.allergens = []
+
+        let ingredients: String = try row.get(Keys.ingredients)
+        self.ingredients = ingredients.semicolonArr
+
+        let additives: String = try row.get(Keys.additives)
+        self.additives = additives.semicolonArr
+
+        let allergens: String = try row.get(Keys.allergens)
+        self.allergens = allergens.semicolonArr
     }
 }
 
@@ -97,9 +100,9 @@ extension Meal: Preparation {
             builder.double(Keys.employeePrice, optional: true)
             builder.string(Keys.image, optional: true)
             builder.string(Keys.detailURL)
-//            builder.string(Keys.ingredients)
-//            builder.string(Keys.additives)
-//            builder.string(Keys.allergens)
+            builder.string(Keys.ingredients)
+            builder.string(Keys.additives)
+            builder.string(Keys.allergens)
         }
     }
 
