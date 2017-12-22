@@ -67,6 +67,7 @@ extension Canteen: Preparation {
 extension Canteen: JSONConvertible {
     func makeJSON() throws -> JSON {
         var json = JSON()
+        try json.set(Keys.id, self.id)
         try json.set(Keys.name, self.name)
         try json.set(Keys.city, self.city)
         try json.set(Keys.address, self.address)
