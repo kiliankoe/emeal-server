@@ -37,6 +37,10 @@ enum Week: Int {
     case afterNext
 
     static let all: [Week] = [.current, .next, .afterNext]
+
+    var dayOffsetToNow: Int {
+        return 7 * self.rawValue
+    }
 }
 
 enum Day: Int {
@@ -48,11 +52,17 @@ enum Day: Int {
     case friday
     case saturday
 
+    func weekdayOffset(to date: Date) -> Int {
+        let comp = Calendar(identifier: .gregorian).dateComponents([.weekday], from: date)
+        let weekoffset = self == .sunday ? 7 : 0
+        return (self.rawValue + 1) - (comp.weekday ?? 0) + weekoffset
+    }
+
     static let all: [Day] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
 }
 
 func isodate(forDay day: Day, inWeek week: Week) -> ISODate {
-    let comp = Calendar(identifier: .gregorian).dateComponents([.weekday, .day, .month, .year], from: Date())
-    // TODO
-    return "2017-12-21"
+    let offset = week.dayOffsetToNow + day.weekdayOffset(to: Date())
+    let date = Date().addingTimeInterval(TimeInterval(offset * 24 * 3600))
+    return date.dateStamp
 }
