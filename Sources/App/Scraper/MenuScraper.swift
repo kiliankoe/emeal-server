@@ -55,6 +55,11 @@ enum Day: Int {
     case friday
     case saturday
 
+    static var today: Day {
+        let comp = Calendar(identifier: .gregorian).dateComponents([.weekday], from: Date())
+        return Day(rawValue: (comp.weekday ?? 0) - 1) ?? .sunday
+    }
+
     func weekdayOffset(to date: Date) -> Int {
         let comp = Calendar(identifier: .gregorian).dateComponents([.weekday], from: date)
         let weekoffset = self == .sunday ? 7 : 0
