@@ -7,8 +7,11 @@ final class MealDetailScraper {
         return (try? doc.getElementById("speiseplanessentext").flatMap { try $0.text() } ?? "") ?? ""
     }
 
-    static func extractPrices(from doc: Document) -> (students: Double?, employees: Double?) {
+    static func extractPrices(from doc: Document) -> (students: Double?, employees: Double?, isSoldOut: Bool) {
         let prices = (try? doc.getElementById("preise")?.text() ?? "") ?? ""
+        guard !prices.contains("ausverkauft") else {
+            return (nil, nil, true)
+        }
         let digitsRegex = Regex("(\\d.,?\\s?\\d.)")
         let digits = digitsRegex.allMatches(in: prices).map { $0.captures[0] }
 
@@ -17,7 +20,7 @@ final class MealDetailScraper {
 
         let studentsPrice = Double(studentsPriceStr ?? "")
         let employeePrice = Double(employeePriceStr ?? "")
-        return (studentsPrice ?? 0, employeePrice ?? 0)
+        return (studentsPrice ?? 0, employeePrice ?? 0, false)
     }
 
     static func extractImageURL(from doc: Document) -> String? {
@@ -57,14 +60,14 @@ final class MealDetailScraper {
 
     public static func scrape(document: Document, fromCanteen canteen: String, onDate date: ISODate, url: String) -> Meal {
         let title = MealDetailScraper.extractTitle(from: document)
-        let (studentPrice, employeePrice) = MealDetailScraper.extractPrices(from: document)
+        let (studentPrice, employeePrice, isSoldOut) = MealDetailScraper.extractPrices(from: document)
         let imgURL = MealDetailScraper.extractImageURL(from: document)
 
         let ingredients = MealDetailScraper.extractIngredients(from: document)
         let additives = MealDetailScraper.extractAdditives(from: document)
         let allergens = MealDetailScraper.extractAllergens(from: document)
 
-        return Meal(title: title, canteen: canteen, date: date, studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: url, ingredients: ingredients, additives: additives, allergens: allergens)
+        return Meal(title: title, canteen: canteen, date: date, isSoldOut: isSoldOut, studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: url, ingredients: ingredients, additives: additives, allergens: allergens)
     }
 }
 

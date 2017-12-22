@@ -11,6 +11,7 @@ final class Meal: Model {
     let canteen: String
     let date: ISODate
 
+    let isSoldOut: Bool
     let studentPrice: Double?
     let employeePrice: Double?
     let image: String?
@@ -22,6 +23,7 @@ final class Meal: Model {
     init(title: String,
          canteen: String,
          date: ISODate,
+         isSoldOut: Bool,
          studentPrice: Double?,
          employeePrice: Double?,
          image: String?,
@@ -32,6 +34,7 @@ final class Meal: Model {
             self.title = title
             self.canteen = canteen
             self.date = date
+            self.isSoldOut = isSoldOut
             self.studentPrice = studentPrice
             self.employeePrice = employeePrice
             self.image = image
@@ -45,6 +48,7 @@ final class Meal: Model {
         static let title = "title"
         static let canteen = "canteen"
         static let date = "date"
+        static let isSoldOut = "isSoldOut"
         static let studentPrice = "studentPrice"
         static let employeePrice = "employeePrice"
         static let image = "image"
@@ -59,6 +63,7 @@ final class Meal: Model {
         try row.set(Keys.title, self.title)
         try row.set(Keys.canteen, self.canteen)
         try row.set(Keys.date, self.date)
+        try row.set(Keys.isSoldOut, self.isSoldOut)
         try row.set(Keys.studentPrice, self.studentPrice)
         try row.set(Keys.employeePrice, self.employeePrice)
         try row.set(Keys.image, self.image)
@@ -73,6 +78,7 @@ final class Meal: Model {
         self.title = try row.get(Keys.title)
         self.canteen = try row.get(Keys.canteen)
         self.date = try row.get(Keys.date)
+        self.isSoldOut = try row.get(Keys.isSoldOut)
         self.studentPrice = try row.get(Keys.studentPrice)
         self.employeePrice = try row.get(Keys.employeePrice)
         self.image = try row.get(Keys.image)
@@ -96,6 +102,7 @@ extension Meal: Preparation {
             builder.string(Keys.title)
             builder.string(Keys.canteen)
             builder.string(Keys.date)
+            builder.bool(Keys.isSoldOut)
             builder.double(Keys.studentPrice, optional: true)
             builder.double(Keys.employeePrice, optional: true)
             builder.string(Keys.image, optional: true)
@@ -117,6 +124,7 @@ extension Meal: JSONConvertible {
         try json.set(Keys.title, self.title)
         try json.set(Keys.canteen, self.canteen)
         try json.set(Keys.date, self.date)
+        try json.set(Keys.isSoldOut, self.isSoldOut)
         try json.set(Keys.studentPrice, self.studentPrice)
         try json.set(Keys.employeePrice, self.employeePrice)
         try json.set(Keys.image, self.image)
@@ -131,6 +139,7 @@ extension Meal: JSONConvertible {
         self.init(title: try json.get(Keys.title),
                   canteen: try json.get(Keys.canteen),
                   date: try json.get(Keys.date),
+                  isSoldOut: try json.get(Keys.isSoldOut),
                   studentPrice: try json.get(Keys.studentPrice),
                   employeePrice: try json.get(Keys.employeePrice),
                   image: try json.get(Keys.image),
