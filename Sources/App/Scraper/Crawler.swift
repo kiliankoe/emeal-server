@@ -1,7 +1,6 @@
 import Foundation
 import Dispatch
 import SwiftSoup
-//import Fluent
 
 class Crawler {
     var queue: [Job] = []
