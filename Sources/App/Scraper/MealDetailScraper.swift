@@ -21,7 +21,7 @@ final class MealDetailScraper {
     }
 
     static func extractImageURL(from doc: Document) -> String? {
-        let img = (try? doc.select("#essenbild img").attr("src")) ?? ""
+        guard let img = (try? doc.select("#essenbild img").attr("src")), !img.isEmpty else { return nil }
         guard !img.contains("noimage.png") else { return nil }
         return "https:\(img)".replacingOccurrences(of: "thumbs/", with: "")
     }
