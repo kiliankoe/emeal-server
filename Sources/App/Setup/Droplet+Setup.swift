@@ -7,11 +7,13 @@ extension Droplet {
     }
 
     public func initialFetchAll() {
-        let menuJobs = Week.all.flatMap { week in
-            return Day.all.map { Job.menu(week: week, day: $0) }
-        }
-        Crawler.shared.queue.append(contentsOf: menuJobs)
+//        let jobs = Week.all.flatMap { week in
+//            return Day.all.map { Job.menu(week: week, day: $0) }
+//        }
+        let jobs = [Day.today].map { Job.menu(week: .current, day: $0) }
 
-//        Crawler.shared.run()
+        Crawler.shared.queue.append(contentsOf: jobs)
+
+        Crawler.shared.run()
     }
 }
