@@ -2,7 +2,7 @@ FROM swiftdocker/swift:latest
 
 COPY . ./
 
-EXPOSE 9090
+EXPOSE 8080
 
 RUN swift build --configuration release
 
