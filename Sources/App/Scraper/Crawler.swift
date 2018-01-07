@@ -81,6 +81,7 @@ class Crawler {
                 response.statusCode/100 == 2
             else {
                 body = nil
+                sema.signal()
                 return
             }
             body = content
