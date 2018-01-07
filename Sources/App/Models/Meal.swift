@@ -68,9 +68,22 @@ final class Meal: Model {
         try row.set(Keys.employeePrice, self.employeePrice)
         try row.set(Keys.image, self.image)
         try row.set(Keys.detailURL, self.detailURL)
-        try row.set(Keys.information, self.information.semicolonStr)
-        try row.set(Keys.additives, self.additives.semicolonStr)
-        try row.set(Keys.allergens, self.allergens.semicolonStr)
+
+        let information = self.information
+            .flatMap(Meal.Information.init)
+            .map { $0.identifier }
+        try row.set(Keys.information, information.semicolonStr)
+
+        let additives = self.additives
+            .flatMap(Meal.Additive.init)
+            .map { $0.identifier }
+        try row.set(Keys.additives, additives.semicolonStr)
+
+        let allergens = self.allergens
+            .flatMap(Meal.Allergen.init)
+            .map { $0.identifier }
+        try row.set(Keys.allergens, allergens.semicolonStr)
+
         return row
     }
 
