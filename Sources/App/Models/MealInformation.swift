@@ -8,8 +8,12 @@ extension Meal {
         case garlic = "knoblauch"
         case vegetarian = "vegetarisch"
         case vegan = "vegan"
+        case red = "rot"
+        case rennet = "tierischem lab"
+        case nomeat = "kein fleisch"
 
-        static var all: [Information] = [.beef, .pork, .alcohol, .garlic, .vegetarian, .vegan]
+        static var all: [Information] = [.beef, .pork, .alcohol, .garlic, .vegetarian, .vegan, .red,
+                                         .rennet, .nomeat]
 
         init?(value: String) {
             let value = value.lowercased()
@@ -19,7 +23,7 @@ extension Meal {
                     return
                 }
             }
-            print("⁉️ Unknown meal ingredient '\(value)' Please add this to `Meal.Information` in MealInformation.swift.")
+            print("⁉️ Unknown meal information '\(value)' Please add this to `Meal.Information` in MealInformation.swift.")
             return nil
         }
 
@@ -31,6 +35,9 @@ extension Meal {
             case .garlic: return "garlic"
             case .vegetarian: return "vegetarian"
             case .vegan: return "vegan"
+            case .red: return "red"
+            case .rennet: return "rennet"
+            case .nomeat: return "no_meat"
             }
         }
     }
@@ -88,6 +95,7 @@ extension Meal {
         case a3 = "(a3)" // Gerste
         case a4 = "(a4)" // Hafer
         case a5 = "(a5)" // Dinkel
+        case a6 = "(a6)" // Grünkern
         case b = "(b)" // Krebstiere
         case c = "(c)" // Eier
         case d = "(d)" // Fisch
@@ -96,7 +104,9 @@ extension Meal {
         case g = "(g)" // Milch/Milchzucker (Laktose)
         case h = "(h)" // Schalenfrüchte (Nüsse)
         case h1 = "(h1)" // Mandeln
+        case h2 = "(h2)" // Haselnüsse
         case h3 = "(h3)" // Walnüsse
+        case h4 = "(h4)" // Cashewnüsse
         case i = "(i)" // Sellerie
         case j = "(j)" // Senf
         case k = "(k)" // Sesam
@@ -104,8 +114,8 @@ extension Meal {
         case m = "(m)" // Lupine
         case n = "(n)" // Weichtiere
 
-        static var all: [Allergen] = [.a, .a1, .a2, .a3, .a4, .a5, .b, .c, .d, .e, .f, .g, .h, .h1,
-                                      .h3, .i, .j, .k, .l, .m, .n]
+        static var all: [Allergen] = [.a, .a1, .a2, .a3, .a4, .a5, .a6, .b, .c, .d, .e, .f, .g, .h,
+                                      .h1, .h2, .h3, .h4, .i, .j, .k, .l, .m, .n]
 
         init?(value: String) {
             let value = value.lowercased()
@@ -127,6 +137,7 @@ extension Meal {
             case .a3: return "A3"
             case .a4: return "A4"
             case .a5: return "A5"
+            case .a6: return "A6"
             case .b: return "B"
             case .c: return "C"
             case .d: return "D"
@@ -135,7 +146,9 @@ extension Meal {
             case .g: return "G"
             case .h: return "H"
             case .h1: return "H1"
+            case .h2: return "H2"
             case .h3: return "H3"
+            case .h4: return "H4"
             case .i: return "I"
             case .j: return "J"
             case .k: return "K"
