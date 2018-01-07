@@ -6,7 +6,14 @@ final class MealController: ResourceRepresentable {
 
     func index(_ req: Request) throws -> ResponseRepresentable {
         let query = try Meal.makeQuery()
-        try query.filter(Meal.Keys.date, Date().dateStamp)
+
+        if let reqQuery = req.query,
+            let date: String = try? reqQuery.get("date") {
+            try query.filter(Meal.Keys.date, date)
+        } else {
+            try query.filter(Meal.Keys.date, Date().dateStamp)
+        }
+
         try query.sort(Meal.Keys.canteen, .ascending)
         return try query.all().makeJSON()
     }
