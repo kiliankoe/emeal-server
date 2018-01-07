@@ -7,11 +7,19 @@ final class MealController: ResourceRepresentable {
     func index(_ req: Request) throws -> ResponseRepresentable {
         let query = try Meal.makeQuery()
 
-        if let reqQuery = req.query,
-            let date: String = try? reqQuery.get("date") {
+        let date: String? = try req.query?.get("date")
+        let canteen: String? = try req.query?.get("canteen")
+
+        if let date = date {
             try query.filter(Meal.Keys.date, date)
         } else {
             try query.filter(Meal.Keys.date, Date().dateStamp)
+        }
+
+        if let canteen = canteen,
+            let id = Int(canteen),
+            let can = try Canteen.all().first { $0.id?.int == id } {
+            try query.filter(Meal.Keys.canteen, can.name)
         }
 
         try query.sort(Meal.Keys.canteen, .ascending)
