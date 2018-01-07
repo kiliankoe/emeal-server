@@ -15,9 +15,10 @@ class Crawler {
         DispatchQueue.global(qos: .background).async {
             var queue = self.queue
             self.queue.removeAll(keepingCapacity: false)
+
+            print("Running crawler...")
             while !queue.isEmpty {
                 let job = queue.removeFirst()
-                print("Fetching content for job \(job).")
                 switch job {
                 case .menu(week: let week, day: let day):
                     let url = MenuScraper.menuURL(forWeek: week, andDay: day)
@@ -34,6 +35,7 @@ class Crawler {
                     let menus = MenuScraper.extractCanteensAndMeals(from: document)
                         .filter { menu in knownCanteens.contains { $0.name.lowercased() == menu.canteen.lowercased() } }
 
+                    var sum = 0
                     for menu in menus {
                         let date = isodate(forDay: day, inWeek: week)
                         let mealJobs = menu.meals.flatMap { urlStr -> Job? in
@@ -43,9 +45,10 @@ class Crawler {
                             }
                             return Job.meal(canteen: menu.canteen, date: date, url: url)
                         }
-                        print("Added \(mealJobs.count) meal download jobs to queue for canteen \(menu.canteen).")
+                        sum += mealJobs.count
                         queue.append(contentsOf: mealJobs)
                     }
+                    print("Added \(sum) meal download jobs to queue.")
                 case .meal(canteen: let canteen, date: let date, url: let url):
                     guard let content = self.fetch(url: url) else {
                         print("❌ Failed fetching content for \(url). Skipping.")
@@ -62,6 +65,7 @@ class Crawler {
                     }
                 }
             }
+            print("✔ Crawler queue emptied.")
         }
     }
 
