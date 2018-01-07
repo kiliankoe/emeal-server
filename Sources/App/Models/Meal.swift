@@ -16,7 +16,7 @@ final class Meal: Model {
     let employeePrice: Double?
     let image: String?
     let detailURL: String
-    let ingredients: [String]
+    let information: [String]
     let additives: [String]
     let allergens: [String]
 
@@ -28,7 +28,7 @@ final class Meal: Model {
          employeePrice: Double?,
          image: String?,
          detailURL: String,
-         ingredients: [String],
+         information: [String],
          additives: [String],
          allergens: [String]) {
             self.title = title
@@ -39,7 +39,7 @@ final class Meal: Model {
             self.employeePrice = employeePrice
             self.image = image
             self.detailURL = detailURL
-            self.ingredients = ingredients
+            self.information = information
             self.additives = additives
             self.allergens = allergens
     }
@@ -53,7 +53,7 @@ final class Meal: Model {
         static let employeePrice = "employeePrice"
         static let image = "image"
         static let detailURL = "detailURL"
-        static let ingredients = "ingredients"
+        static let information = "information"
         static let additives = "additives"
         static let allergens = "allergens"
     }
@@ -68,7 +68,7 @@ final class Meal: Model {
         try row.set(Keys.employeePrice, self.employeePrice)
         try row.set(Keys.image, self.image)
         try row.set(Keys.detailURL, self.detailURL)
-        try row.set(Keys.ingredients, self.ingredients.semicolonStr)
+        try row.set(Keys.information, self.information.semicolonStr)
         try row.set(Keys.additives, self.additives.semicolonStr)
         try row.set(Keys.allergens, self.allergens.semicolonStr)
         return row
@@ -84,8 +84,8 @@ final class Meal: Model {
         self.image = try row.get(Keys.image)
         self.detailURL = try row.get(Keys.detailURL)
 
-        let ingredients: String = try row.get(Keys.ingredients)
-        self.ingredients = ingredients.semicolonArr
+        let information: String = try row.get(Keys.information)
+        self.information = information.semicolonArr
 
         let additives: String = try row.get(Keys.additives)
         self.additives = additives.semicolonArr
@@ -107,7 +107,7 @@ extension Meal: Preparation {
             builder.double(Keys.employeePrice, optional: true)
             builder.string(Keys.image, optional: true)
             builder.string(Keys.detailURL)
-            builder.string(Keys.ingredients)
+            builder.string(Keys.information)
             builder.string(Keys.additives)
             builder.string(Keys.allergens)
         }
@@ -129,7 +129,7 @@ extension Meal: JSONConvertible {
         try json.set(Keys.employeePrice, self.employeePrice)
         try json.set(Keys.image, self.image)
         try json.set(Keys.detailURL, self.detailURL)
-        try json.set(Keys.ingredients, self.ingredients)
+        try json.set(Keys.information, self.information)
         try json.set(Keys.additives, self.additives)
         try json.set(Keys.allergens, self.allergens)
         return json
@@ -144,7 +144,7 @@ extension Meal: JSONConvertible {
                   employeePrice: try json.get(Keys.employeePrice),
                   image: try json.get(Keys.image),
                   detailURL: try json.get(Keys.detailURL),
-                  ingredients: try json.get(Keys.ingredients),
+                  information: try json.get(Keys.information),
                   additives: try json.get(Keys.additives),
                   allergens: try json.get(Keys.allergens))
     }

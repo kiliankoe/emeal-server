@@ -36,9 +36,9 @@ class MealDetailScraperTests: XCTestCase {
     }
 
     func testExtractIngredients() {
-        let ingredients1 = MealDetailScraper.extractIngredients(from: document1)
+        let ingredients1 = MealDetailScraper.extractInformation(from: document1)
         XCTAssertEqual(ingredients1, ["Menü ist vegetarisch", "enthält Knoblauch"])
-        let ingredients2 = MealDetailScraper.extractIngredients(from: document2)
+        let ingredients2 = MealDetailScraper.extractInformation(from: document2)
         XCTAssertEqual(ingredients2, ["enthält Schweinefleisch"])
     }
 

@@ -46,8 +46,8 @@ final class MealDetailScraper {
         return values
     }
 
-    static func extractIngredients(from doc: Document) -> [String] {
-        return extractInfos(at: .ingredients, from: doc)
+    static func extractInformation(from doc: Document) -> [String] {
+        return extractInfos(at: .information, from: doc)
     }
 
     static func extractAdditives(from doc: Document) -> [String] {
@@ -63,24 +63,24 @@ final class MealDetailScraper {
         let (studentPrice, employeePrice, isSoldOut) = MealDetailScraper.extractPrices(from: document)
         let imgURL = MealDetailScraper.extractImageURL(from: document)
 
-        let ingredients = MealDetailScraper.extractIngredients(from: document)
+        let information = MealDetailScraper.extractInformation(from: document)
         let additives = MealDetailScraper.extractAdditives(from: document)
         let allergens = MealDetailScraper.extractAllergens(from: document)
 
-        return Meal(title: title, canteen: canteen, date: date, isSoldOut: isSoldOut, studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: url, ingredients: ingredients, additives: additives, allergens: allergens)
+        return Meal(title: title, canteen: canteen, date: date, isSoldOut: isSoldOut, studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: url, information: information, additives: additives, allergens: allergens)
     }
 }
 
 private enum InfoSection: String {
-    case ingredients = "informationen"
+    case information = "informationen"
     case additives = "zusatzstoffe"
     case allergens = "allergene"
     case unknown // placeholder for other possible section headers
 
     init(string: String) {
         let str = string.lowercased()
-        if str.contains(InfoSection.ingredients.rawValue) {
-            self = .ingredients
+        if str.contains(InfoSection.information.rawValue) {
+            self = .information
             return
         } else if str.contains(InfoSection.additives.rawValue) {
             self = .additives
