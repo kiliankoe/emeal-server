@@ -29,7 +29,8 @@ final class MenuScraper {
 
         let meals = (try? rows?
             .dropFirst()
-            .map { try $0.select("a").first()?.attr("href") ?? "" }
+            // .contains("details") is a workaround for skipping mensavital.de links
+            .map { try $0.select("a").filter({ try $0.attr("href").contains("details") }).first?.attr("href") ?? "" }
             .filter { !$0.isEmpty }
             .filter { $0 != "#" }
             .map { "https://www.studentenwerk-dresden.de/mensen/speiseplan/\($0)" }
