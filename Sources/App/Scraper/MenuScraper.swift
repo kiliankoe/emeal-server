@@ -3,7 +3,7 @@ import SwiftSoup
 
 final class MenuScraper {
     static func menuURL(forWeek week: Week, andDay day: Day) -> URL {
-        return URL(string: "https://www.studentenwerk-dresden.de/mensen/speiseplan/w\(week.rawValue)-d\(day.rawValue).html")!
+        return URL(string: "https://www.studentenwerk-dresden.de/mensen/speiseplan/w\(week.rawValue)-d\(day.stuweValue).html")!
     }
 
     static func extractMenus(from doc: Document) -> Elements? {
@@ -32,45 +32,4 @@ final class MenuScraper {
             .map(MenuScraper.parseMenu)
             ?? []
     }
-}
-
-enum Week: Int {
-    case current = 0
-    case next
-    case afterNext
-
-    static let all: [Week] = [.current, .next, .afterNext]
-
-    var dayOffsetToNow: Int {
-        return 7 * self.rawValue
-    }
-}
-
-enum Day: Int {
-    case sunday = 0
-    case monday
-    case tuesday
-    case wednesday
-    case thursday
-    case friday
-    case saturday
-
-    static var today: Day {
-        let comp = Calendar(identifier: .gregorian).dateComponents([.weekday], from: Date())
-        return Day(rawValue: (comp.weekday ?? 0) - 1) ?? .sunday
-    }
-
-    func weekdayOffset(to date: Date) -> Int {
-        let comp = Calendar(identifier: .gregorian).dateComponents([.weekday], from: date)
-        let weekoffset = self == .sunday ? 7 : 0
-        return (self.rawValue + 1) - (comp.weekday ?? 0) + weekoffset
-    }
-
-    static let all: [Day] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
-}
-
-func isodate(forDay day: Day, inWeek week: Week) -> ISODate {
-    let offset = week.dayOffsetToNow + day.weekdayOffset(to: Date())
-    let date = Date().addingTimeInterval(TimeInterval(offset * 24 * 3600))
-    return date.dateStamp
 }
