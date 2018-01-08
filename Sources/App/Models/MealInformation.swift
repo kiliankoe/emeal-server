@@ -8,12 +8,14 @@ extension Meal {
         case garlic = "knoblauch"
         case vegetarian = "vegetarisch"
         case vegan = "vegan"
-        case red = "rot"
         case rennet = "tierischem lab"
         case nomeat = "kein fleisch"
+        case red = "rot"
+        case green = "grün"
+        case blue = "blau"
 
-        static var all: [Information] = [.beef, .pork, .alcohol, .garlic, .vegetarian, .vegan, .red,
-                                         .rennet, .nomeat]
+        static var all: [Information] = [.beef, .pork, .alcohol, .garlic, .vegetarian, .vegan,
+                                         .rennet, .nomeat, .red, .green, .blue]
 
         init?(value: String) {
             let value = value.lowercased()
@@ -35,9 +37,11 @@ extension Meal {
             case .garlic: return "garlic"
             case .vegetarian: return "vegetarian"
             case .vegan: return "vegan"
-            case .red: return "red"
             case .rennet: return "rennet"
             case .nomeat: return "no_meat"
+            case .red: return "red"
+            case .green: return "green"
+            case .blue: return "blue"
             }
         }
     }
