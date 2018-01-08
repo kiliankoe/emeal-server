@@ -7,8 +7,8 @@ class Crawler {
 
     static let shared = Crawler()
 
-    func add(_ job: Job) {
-        self.queue.append(job)
+    func add(_ jobs: [Job]) {
+        self.queue.append(contentsOf: jobs)
     }
 
     func run() {
