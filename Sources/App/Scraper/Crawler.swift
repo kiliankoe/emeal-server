@@ -48,7 +48,7 @@ class Crawler {
                         sum += mealJobs.count
                         queue.append(contentsOf: mealJobs)
                     }
-                    print("Added \(sum) meal download jobs to queue.")
+                    print("Added \(sum) meal download jobs to queue for \(day) in \(week) week.")
                 case .meal(canteen: let canteen, date: let date, url: let url):
                     guard let content = self.fetch(url: url) else {
                         print("❌ Failed fetching content for \(url). Skipping.")
