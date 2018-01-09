@@ -18,7 +18,7 @@ final class MealController: ResourceRepresentable {
 
         if let canteen = canteen,
             let id = Int(canteen),
-            let can = try Canteen.all().first { $0.id?.int == id } {
+            let can = try Canteen.find(id) {
             try query.filter(Meal.Keys.canteen, can.name)
         }
 
