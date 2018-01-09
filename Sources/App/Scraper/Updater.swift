@@ -9,6 +9,7 @@ public class Updater {
         static let nextDay = Duration.hours(6)
         static let currentWeek = Duration.hours(24)
         static let nextTwoWeeks = Duration.days(5)
+        static let deleteOldData = Duration.days(1)
     }
 
     static var currentDayLastRun = Date()
@@ -56,6 +57,19 @@ public class Updater {
                 }
             }
             Updater.run(jobs: jobs, id: 4)
+        }
+
+        Jobs.delay(by: Interval.deleteOldData, interval: Interval.deleteOldData) {
+            Log.verbose("delete old data update")
+            do {
+                let currentDate = isodate(forDay: .today, inWeek: .current)
+                let pastMeals = try Meal.all().filter { $0.date < currentDate }
+                for meal in pastMeals {
+                    try meal.delete()
+                }
+            } catch {
+                Log.error("Failed to delete old meals.")
+            }
         }
     }
 
