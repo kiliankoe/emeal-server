@@ -23,6 +23,7 @@ let drop = try Droplet(config)
 try drop.setup()
 
 try config.loadCanteens()
+Log.droplet = drop
 Updater.run()
 
 try drop.run()

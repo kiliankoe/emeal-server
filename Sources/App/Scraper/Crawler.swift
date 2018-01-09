@@ -1,6 +1,7 @@
 import Foundation
 import Dispatch
 import SwiftSoup
+import Vapor
 
 class Crawler {
     let id: Int
@@ -11,14 +12,10 @@ class Crawler {
         self.queue = queue
     }
 
-    func log(_ message: String) {
-        print("#\(self.id) \(message)")
-    }
-
     func run() {
         let dispatchQueue = DispatchQueue(label: "emeal-server.crawler")
         dispatchQueue.async {
-            self.log("running ↻")
+            Log.debug("#\(self.id) running ↻")
 
             while !self.queue.isEmpty {
                 let job = self.queue.removeFirst()
@@ -26,11 +23,11 @@ class Crawler {
                 case .menu(week: let week, day: let day):
                     let url = MenuScraper.menuURL(forWeek: week, andDay: day)
                     guard let content = self.fetch(url: url) else {
-                        self.log("❌ Failed fetching content for \(url). Skipping.")
+                        Log.error("Failed fetching content for \(url).")
                         continue
                     }
                     guard let document = try? SwiftSoup.parse(content) else {
-                        self.log("❌ Failed parsing content for \(url). Skipping.")
+                        Log.error("Failed parsing content for \(url).")
                         continue
                     }
 
@@ -43,7 +40,7 @@ class Crawler {
                         let date = isodate(forDay: day, inWeek: week)
                         let mealJobs = menu.meals.flatMap { urlStr -> Job? in
                             guard let url = URL(string: urlStr) else {
-                                self.log("❌ Invalid URL for meal: \(urlStr)")
+                                Log.error("Invalid URL for meal: \(urlStr)")
                                 return nil
                             }
                             return Job.meal(canteen: menu.canteen, date: date, url: url)
@@ -51,7 +48,7 @@ class Crawler {
                         sum += mealJobs.count
                         self.queue.append(contentsOf: mealJobs)
                     }
-                    self.log("→ \(job.date): \(sum) meal downloads queued")
+                    Log.info("#\(self.id) → \(job.date) \(day): \(sum) meal downloads queued")
 
                 case .meal(canteen: let canteen, date: let date, url: let url):
                     do {
@@ -60,26 +57,26 @@ class Crawler {
                         let meal = try query.all()
                         try meal.forEach { try $0.delete() }
                     } catch {
-                        self.log("❌ Failed deleting previous meal in db for \(url). Skipping.")
+                        Log.error("Failed deleting previous meal in db for \(url).")
                     }
 
                     guard let content = self.fetch(url: url) else {
-                        self.log("❌ Failed fetching content for \(url). Skipping.")
+                        Log.error("Failed fetching content for \(url)")
                         continue
                     }
                     guard let document = try? SwiftSoup.parse(content) else {
-                        self.log("❌ Failed parsing content for \(url). Skipping.")
+                        Log.error("Failed parsing content for \(url).")
                         continue
                     }
                     let meal = MealDetailScraper.scrape(document: document, fromCanteen: canteen, onDate: date, url: url.absoluteString)
                     guard let _ = try? meal.save() else {
-                        self.log("❌ Failed saving meal \(String(describing: meal.id)) to DB.")
+                        Log.error("Failed saving meal \(String(describing: meal.id)) to DB.")
                         continue
                     }
                 }
             }
 
-            self.log("done ✔")
+            Log.debug("#\(self.id) done ✔")
         }
     }
 

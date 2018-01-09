@@ -26,7 +26,7 @@ extension Meal {
                     return
                 }
             }
-            print("⁉️ Unknown meal information '\(value)' Please add this to `Meal.Information` in MealInformation.swift.")
+            Log.error("⁉️ Unknown meal information '\(value)'.")
             return nil
         }
 
@@ -72,7 +72,7 @@ extension Meal {
                     return
                 }
             }
-            print("⁉️ Unknown meal additive '\(value)' Please add this to `Meal.Additive` in MealInformation.swift.")
+            Log.error("⁉️ Unknown meal additive '\(value)'.")
             return nil
         }
 
@@ -131,7 +131,7 @@ extension Meal {
                     return
                 }
             }
-            print("⁉️ Unknown meal allergen '\(value)' Please add this to `Meal.Allergen` in MealInformation.swift.")
+            Log.error("⁉️ Unknown meal allergen '\(value)'.")
             return nil
         }
 
