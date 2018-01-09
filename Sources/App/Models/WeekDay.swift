@@ -25,6 +25,10 @@ enum Day: Int {
         return Day.today(from: Date())
     }
 
+    var next: Day {
+        return Day(rawValue: (self.rawValue + 1) % 7)!
+    }
+
     internal static func today(from date: Date) -> Day {
         let comp = Calendar(identifier: .gregorian).dateComponents([.weekday], from: date)
         switch (comp.weekday ?? 1) {
@@ -48,6 +52,15 @@ enum Day: Int {
     }
 
     static let all: [Day] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+}
+
+enum Time {
+    static var isDay: Bool {
+        let now = Date()
+        let comp = Calendar(identifier: .gregorian).dateComponents([.hour], from: now)
+        let hour = comp.hour ?? 0
+        return hour >= 8 && hour <= 20
+    }
 }
 
 func isodate(forDay day: Day, inWeek week: Week, fromDate date: Date = Date()) -> ISODate {
