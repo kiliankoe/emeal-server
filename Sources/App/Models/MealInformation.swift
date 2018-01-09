@@ -13,9 +13,10 @@ extension Meal {
         case red = "rot"
         case green = "grün"
         case blue = "blau"
+        case mensavital = "mensavital"
 
         static var all: [Information] = [.beef, .pork, .alcohol, .garlic, .vegetarian, .vegan,
-                                         .rennet, .nomeat, .red, .green, .blue]
+                                         .rennet, .nomeat, .red, .green, .blue, .mensavital]
 
         init?(value: String) {
             let value = value.lowercased()
@@ -42,6 +43,7 @@ extension Meal {
             case .red: return "red"
             case .green: return "green"
             case .blue: return "blue"
+            case .mensavital: return "mensavital"
             }
         }
     }
