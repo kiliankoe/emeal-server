@@ -3,31 +3,30 @@ import Dispatch
 import SwiftSoup
 
 class Crawler {
+    let id: Int
     var queue: [Job] = []
 
-    static let shared = Crawler()
-
-    func add(_ jobs: [Job]) {
-        self.queue.append(contentsOf: jobs)
+    init(id: Int, queue: [Job]) {
+        self.id = id
+        self.queue = queue
     }
 
     func run() {
-        DispatchQueue.global(qos: .background).async {
-            var queue = self.queue
-            self.queue.removeAll(keepingCapacity: false)
+        let dispatchQueue = DispatchQueue(label: "emeal-server.crawler")
+        dispatchQueue.async {
+            print("#\(self.id) running...")
 
-            print("Running crawler...")
-            while !queue.isEmpty {
-                let job = queue.removeFirst()
+            while !self.queue.isEmpty {
+                let job = self.queue.removeFirst()
                 switch job {
                 case .menu(week: let week, day: let day):
                     let url = MenuScraper.menuURL(forWeek: week, andDay: day)
                     guard let content = self.fetch(url: url) else {
-                        print("❌ Failed fetching content for \(url). Skipping.")
+                        print("❌ #\(self.id) Failed fetching content for \(url). Skipping.")
                         continue
                     }
                     guard let document = try? SwiftSoup.parse(content) else {
-                        print("❌ Failed parsing content for \(url). Skipping.")
+                        print("❌ #\(self.id) Failed parsing content for \(url). Skipping.")
                         continue
                     }
 
@@ -40,32 +39,43 @@ class Crawler {
                         let date = isodate(forDay: day, inWeek: week)
                         let mealJobs = menu.meals.flatMap { urlStr -> Job? in
                             guard let url = URL(string: urlStr) else {
-                                print("❌ Invalid URL for meal: \(urlStr)")
+                                print("❌ #\(self.id) Invalid URL for meal: \(urlStr)")
                                 return nil
                             }
                             return Job.meal(canteen: menu.canteen, date: date, url: url)
                         }
                         sum += mealJobs.count
-                        queue.append(contentsOf: mealJobs)
+                        self.queue.append(contentsOf: mealJobs)
                     }
-                    print("Added \(sum) meal download jobs to queue for \(day) in \(week) week.")
+                    print("#\(self.id) → \(job.date): \(sum) meal downloads queued")
+
                 case .meal(canteen: let canteen, date: let date, url: let url):
+                    do {
+                        let query = try Meal.makeQuery()
+                        try query.filter(Meal.Keys.detailURL, url.absoluteString)
+                        let meal = try query.all()
+                        try meal.forEach { try $0.delete() }
+                    } catch {
+                        print("❌ #\(self.id) Failed deleting previous meal in db for \(url). Skipping.")
+                    }
+
                     guard let content = self.fetch(url: url) else {
-                        print("❌ Failed fetching content for \(url). Skipping.")
+                        print("❌ #\(self.id) Failed fetching content for \(url). Skipping.")
                         continue
                     }
                     guard let document = try? SwiftSoup.parse(content) else {
-                        print("❌ Failed parsing content for \(url). Skipping.")
+                        print("❌ #\(self.id) Failed parsing content for \(url). Skipping.")
                         continue
                     }
                     let meal = MealDetailScraper.scrape(document: document, fromCanteen: canteen, onDate: date, url: url.absoluteString)
                     guard let _ = try? meal.save() else {
-                        print("❌ Failed saving meal \(String(describing: meal.id)) to DB.")
+                        print("❌ #\(self.id) Failed saving meal \(String(describing: meal.id)) to DB.")
                         continue
                     }
                 }
             }
-            print("✔ Crawler queue emptied.")
+
+            print("✔ Crawler #\(self.id) queue emptied.")
         }
     }
 
@@ -100,4 +110,13 @@ class Crawler {
 enum Job {
     case menu(week: Week, day: Day)
     case meal(canteen: String, date: ISODate, url: URL)
+
+    var date: ISODate {
+        switch self {
+        case let .menu(week: week, day: day):
+            return isodate(forDay: day, inWeek: week)
+        case let .meal(canteen: _, date: date, url: _):
+            return date
+        }
+    }
 }
