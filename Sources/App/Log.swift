@@ -4,8 +4,7 @@ public class Log {
     public static weak var droplet: Droplet?
 
     public static func log(level: LogLevel, message: String, file: String, function: String, line: Int) {
-        let date = Date()
-        Log.droplet?.log.log(level, message: "\(date) \(message)", file: file, function: function, line: line)
+        Log.droplet?.log.log(level, message: message, file: file, function: function, line: line)
     }
 
     public static func verbose(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
