@@ -8,7 +8,7 @@ extension Meal {
         case garlic = "knoblauch"
         case vegetarian = "vegetarisch"
         case vegan = "vegan"
-        case rennet = "tierischem lab"
+        case rennet = " lab" // '-mit tierischem lab-' & 'gorgonzola enthält tierisches lab'
         case nomeat = "kein fleisch"
         case red = "rot"
         case green = "grün"
