@@ -11,7 +11,7 @@ final class Meal: Model {
     let canteen: String
     let date: ISODate
 
-    let isSoldOut: Bool
+    var isSoldOut: Bool
     let studentPrice: Double?
     let employeePrice: Double?
     let image: String?

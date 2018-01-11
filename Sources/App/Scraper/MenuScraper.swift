@@ -21,27 +21,46 @@ final class MenuScraper {
         return try? doc.getElementsByClass("speiseplan")
     }
 
-    static func parseMenu(_ menu: Element) -> (canteen: String, meals: [String]) {
-        let rows = try? menu.select("tr")
-        let canteen = ((try? rows?.first()?.select("th").first()?.text() ?? "") ?? "")
-            .replacingOccurrences(of: "Angebote ", with: "")
-            .replacingOccurrences(of: " (Bio-Code-Nummer: DE-ÖKO-021)", with: "") // yay for edgecases
+    static func parseMenu(_ menu: Element) -> (canteen: String, meals: [URL])? {
+        do {
+            let rows = try menu.select("tr")
+            let canteen = (try rows.first()?.select("th").first()?.text() ?? "")
+                .replacingOccurrences(of: "Angebote ", with: "")
+                .replacingOccurrences(of: " (Bio-Code-Nummer: DE-ÖKO-021)", with: "") // yay for edgecases
 
-        let meals = (try? rows?
-            .dropFirst()
-            // .contains("details") is a workaround for skipping mensavital.de links
-            .map { try $0.select("a").filter({ try $0.attr("href").contains("details") }).first?.attr("href") ?? "" }
-            .filter { !$0.isEmpty }
-            .filter { $0 != "#" }
-            .map { "https://www.studentenwerk-dresden.de/mensen/speiseplan/\($0)" }
-            ?? []) ?? []
+            let mealRows = try rows.dropFirst() // row header
+                .map { try $0.select("a").filter({ try
+                    // .contains("details") is a workaround for skipping mensavital.de links
+                    $0.attr("href").contains("details") }).first?.attr("href") ?? "" }
+                .filter { !$0.isEmpty && $0 != "#" }
 
-        return (canteen, meals)
+            let mealURLs = mealRows
+                .flatMap { detailStr in
+                    let details = detailStr.split(separator: "?").first ?? ""
+                    guard details.hasPrefix("details") && details.hasSuffix(".html") else {
+                        Log.error("")
+                        return nil
+                    }
+                    return String(details)
+                }
+                .flatMap { detail -> URL? in
+                    guard let url = URL(string: "https://www.studentenwerk-dresden.de/mensen/speiseplan/\(detail)") else {
+                        Log.error("Malformed meal URL for '\(detail)'.")
+                        return nil
+                    }
+                    return url
+                }
+
+            return (canteen, mealURLs)
+        } catch let error {
+            Log.error("Menu parse error: \(error)")
+            return nil
+        }
     }
 
-    static func extractCanteensAndMeals(from doc: Document) -> [(canteen: String, meals: [String])] {
+    static func extractCanteensAndMeals(from doc: Document) -> [(canteen: String, meals: [URL])] {
         return MenuScraper.extractMenus(from: doc)?
-            .map(MenuScraper.parseMenu)
+            .flatMap(MenuScraper.parseMenu)
             ?? []
     }
 }
