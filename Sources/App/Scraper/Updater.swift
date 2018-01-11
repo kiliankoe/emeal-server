@@ -23,16 +23,16 @@ public class Updater {
                     Job.menu(week: week, day: day)
                 }
             }
-            Updater.run(jobs: jobs, id: 0)
+            Updater.run(jobs: jobs)
         }
 
         Jobs.delay(by: Interval.currentDay, interval: Interval.currentDay) {
             Log.verbose("current day update")
             if Time.isDay {
-                Updater.run(jobs: [.menu(week: .current, day: .today)], id: 1)
+                Updater.run(jobs: [.menu(week: .current, day: .today)])
             } else {
                 guard Updater.currentDayLastRun.timeIntervalSinceNow.hours <= -3 else { return }
-                Updater.run(jobs: [.menu(week: .current, day: .today)], id: 1)
+                Updater.run(jobs: [.menu(week: .current, day: .today)])
             }
 
             Updater.currentDayLastRun = Date()
@@ -40,13 +40,13 @@ public class Updater {
 
         Jobs.delay(by: Interval.nextDay, interval: Interval.nextDay) {
             Log.verbose("next day update")
-            Updater.run(jobs: [.menu(week: .current, day: Day.today.next)], id: 2)
+            Updater.run(jobs: [.menu(week: .current, day: Day.today.next)])
         }
 
         Jobs.delay(by: Interval.currentWeek, interval: Interval.currentWeek) {
             Log.verbose("current week update")
             let jobs = Day.all.map { Job.menu(week: .current, day: $0) }
-            Updater.run(jobs: jobs, id: 3)
+            Updater.run(jobs: jobs)
         }
 
         Jobs.delay(by: Interval.nextTwoWeeks, interval: Interval.nextTwoWeeks) {
@@ -56,7 +56,7 @@ public class Updater {
                     Job.menu(week: week, day: day)
                 }
             }
-            Updater.run(jobs: jobs, id: 4)
+            Updater.run(jobs: jobs)
         }
 
         Jobs.delay(by: Interval.deleteOldData, interval: Interval.deleteOldData) {
@@ -73,9 +73,16 @@ public class Updater {
         }
     }
 
-    private static func run(jobs: [Job], id: Int) {
+    private static func run(jobs: [Job]) {
         guard !jobs.isEmpty else { return }
-        let crawler = Crawler(id: id, queue: jobs)
-        crawler.run()
+
+        let crawlers = jobs.enumerated().map { (arg) -> Crawler in
+            let (idx, job) = arg
+            return Crawler(id: idx, queue: [job])
+        }
+
+        crawlers.forEach {
+            $0.run()
+        }
     }
 }
