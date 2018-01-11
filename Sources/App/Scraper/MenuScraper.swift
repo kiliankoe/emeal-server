@@ -36,7 +36,7 @@ final class MenuScraper {
 
             let mealURLs = mealRows
                 .flatMap { detailStr in
-                    let details = detailStr.split(separator: "?").first ?? ""
+                    let details = String(detailStr.split(separator: "?").first ?? "")
                     guard details.hasPrefix("details") && details.hasSuffix(".html") else {
                         Log.error("")
                         return nil
