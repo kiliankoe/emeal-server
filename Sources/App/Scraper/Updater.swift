@@ -76,13 +76,17 @@ public class Updater {
     private static func run(jobs: [Job]) {
         guard !jobs.isEmpty else { return }
 
-        let crawlers = jobs.enumerated().map { (arg) -> Crawler in
-            let (idx, job) = arg
-            return Crawler(id: idx, queue: [job])
+        if let _ = ProcessInfo.processInfo.environment["EMEAL_CONCURRENT_CRAWLERS"] {
+            jobs.enumerated().forEach { (jobs) in
+                let (idx, job) = jobs
+                let crawler = Crawler(id: idx, queue: [job])
+                crawler.run()
+            }
+        } else {
+            let crawler = Crawler(id: 0, queue: jobs)
+            crawler.run()
         }
 
-        crawlers.forEach {
-            $0.run()
-        }
+
     }
 }
