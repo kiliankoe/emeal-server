@@ -1,3 +1,4 @@
+import Foundation
 import Vapor
 import FluentProvider
 import HTTP
@@ -12,10 +13,12 @@ final class Meal: Model {
     let date: ISODate
 
     var isSoldOut: Bool
+    let counter: String?
+    let isEveningOffer: Bool
     let studentPrice: Double?
     let employeePrice: Double?
     let image: String?
-    let detailURL: String
+    let detailURL: URL
     let information: [String]
     let additives: [String]
     let allergens: [String]
@@ -24,10 +27,12 @@ final class Meal: Model {
          canteen: String,
          date: ISODate,
          isSoldOut: Bool,
+         counter: String?,
+         isEveningOffer: Bool,
          studentPrice: Double?,
          employeePrice: Double?,
          image: String?,
-         detailURL: String,
+         detailURL: URL,
          information: [String],
          additives: [String],
          allergens: [String]) {
@@ -35,6 +40,8 @@ final class Meal: Model {
             self.canteen = canteen
             self.date = date
             self.isSoldOut = isSoldOut
+            self.counter = counter
+            self.isEveningOffer = isEveningOffer
             self.studentPrice = studentPrice
             self.employeePrice = employeePrice
             self.image = image
@@ -49,6 +56,8 @@ final class Meal: Model {
         static let canteen = "canteen"
         static let date = "date"
         static let isSoldOut = "isSoldOut"
+        static let counter = "counter"
+        static let isEveningOffer = "isEveningOffer"
         static let studentPrice = "studentPrice"
         static let employeePrice = "employeePrice"
         static let image = "image"
@@ -64,10 +73,12 @@ final class Meal: Model {
         try row.set(Keys.canteen, self.canteen)
         try row.set(Keys.date, self.date)
         try row.set(Keys.isSoldOut, self.isSoldOut)
+        try row.set(Keys.counter, self.counter)
+        try row.set(Keys.isEveningOffer, self.isEveningOffer)
         try row.set(Keys.studentPrice, self.studentPrice)
         try row.set(Keys.employeePrice, self.employeePrice)
         try row.set(Keys.image, self.image)
-        try row.set(Keys.detailURL, self.detailURL)
+        try row.set(Keys.detailURL, self.detailURL.absoluteString)
 
         let information = self.information
             .flatMap(Meal.Information.init(value:))
@@ -92,6 +103,8 @@ final class Meal: Model {
         self.canteen = try row.get(Keys.canteen)
         self.date = try row.get(Keys.date)
         self.isSoldOut = try row.get(Keys.isSoldOut)
+        self.counter = try row.get(Keys.counter)
+        self.isEveningOffer = try row.get(Keys.isEveningOffer)
         self.studentPrice = try row.get(Keys.studentPrice)
         self.employeePrice = try row.get(Keys.employeePrice)
         self.image = try row.get(Keys.image)
@@ -116,6 +129,8 @@ extension Meal: Preparation {
             builder.string(Keys.canteen)
             builder.string(Keys.date)
             builder.bool(Keys.isSoldOut)
+            builder.string(Keys.counter, optional: true)
+            builder.bool(Keys.isEveningOffer)
             builder.double(Keys.studentPrice, optional: true)
             builder.double(Keys.employeePrice, optional: true)
             builder.string(Keys.image, optional: true)
@@ -138,6 +153,8 @@ extension Meal: JSONConvertible {
         try json.set(Keys.canteen, self.canteen)
         try json.set(Keys.date, self.date)
         try json.set(Keys.isSoldOut, self.isSoldOut)
+        try json.set(Keys.counter, self.counter)
+        try json.set(Keys.isEveningOffer, self.isEveningOffer)
         try json.set(Keys.studentPrice, self.studentPrice)
         try json.set(Keys.employeePrice, self.employeePrice)
         try json.set(Keys.image, self.image)
@@ -153,6 +170,8 @@ extension Meal: JSONConvertible {
                   canteen: try json.get(Keys.canteen),
                   date: try json.get(Keys.date),
                   isSoldOut: try json.get(Keys.isSoldOut),
+                  counter: try json.get(Keys.counter),
+                  isEveningOffer: try json.get(Keys.isEveningOffer),
                   studentPrice: try json.get(Keys.studentPrice),
                   employeePrice: try json.get(Keys.employeePrice),
                   image: try json.get(Keys.image),

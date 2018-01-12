@@ -24,6 +24,12 @@ class Crawler {
 
                 switch job {
                 case let .menu(week: week, day: day):
+
+                    guard let date = MenuScraper.extractDate(from: document) else {
+                        Log.error("Failed to read menu date at \(job.url.absoluteString)")
+                        continue
+                    }
+
                     let knownCanteens = (try? Canteen.all().map { $0.name.lowercased() }) ?? []
                     let menus = MenuScraper.extractCanteensAndMeals(from: document)
                         .filter {
@@ -38,7 +44,7 @@ class Crawler {
 
                     let mealJobs = menus.flatMap { menu -> [Job] in
                         let meals = menu.meals.map { meal in
-                            return Job.meal(canteen: menu.canteen, date: job.date, url: meal)
+                            return Job.meal(date: date, url: meal)
                         }
 
                         if day == Day.today && week == .current {
@@ -53,24 +59,28 @@ class Crawler {
                     }
 
                     self.queue.append(contentsOf: mealJobs)
-                    Log.info("#\(self.id) → \(job.date) \(day): \(mealJobs.count) meal downloads queued")
 
-                case let .meal(canteen: canteen, date: date, url: url):
+                    Log.info("#\(self.id) → \(date.dateStamp) \(day): \(mealJobs.count) meal downloads queued")
+
+                case let .meal(date: date, url: url):
                     do {
-                        let query = try Meal.makeQuery()
-                        try query.filter(Meal.Keys.detailURL, url.absoluteString)
-                        let meal = try query.all()
-                        try meal.forEach { try $0.delete() }
-                    } catch {
-                        Log.error("Failed deleting previous meal in db for \(url).")
+                        let meals = try Meal.makeQuery()
+                            .filter(Meal.Keys.detailURL, url)
+                            .all()
+                        try meals.forEach { try $0.delete() }
+                    } catch let error {
+                        Log.error("Failed deleting previous meal in db for \(url): \(error)")
                     }
 
-                    let meal = MealDetailScraper.scrape(document: document, fromCanteen: canteen, onDate: date, url: url.absoluteString)
+                    guard let meal = MealDetailScraper.scrape(document: document, url: url, forDate: date) else {
+                        Log.error("Failed to scrape meal details.")
+                        continue
+                    }
 
                     do {
                         try meal.save()
-                    } catch {
-                        Log.error("Failed saving meal \(String(describing: meal.id)) to db.")
+                    } catch let error {
+                        Log.error("Failed saving meal \(String(describing: meal.id)) to db: \(error)")
                         continue
                     }
                 }
@@ -89,7 +99,7 @@ class Crawler {
             try query.filter(Meal.Keys.date, isodate(forDay: .today, inWeek: .current))
             try query.filter(Meal.Keys.canteen, menu.canteen)
             let soldOutMeals = try query.all()
-                .filter { !meals.contains($0.detailURL) }
+                .filter { !meals.contains($0.detailURL.absoluteString) }
 
             if soldOutMeals.count > 0 {
                 Log.debug("\(soldOutMeals.count) meals removed since last update @ \(menu.canteen):")

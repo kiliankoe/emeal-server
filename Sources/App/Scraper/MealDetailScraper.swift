@@ -29,6 +29,21 @@ final class MealDetailScraper {
         return "https:\(img)".replacingOccurrences(of: "thumbs/", with: "")
     }
 
+    static func extractHeadlineInfo(from doc: Document) -> (canteen: String, counter: String?, isEveningOffer: Bool)? {
+        let headline = (try? doc.select("#speiseplandetails>h1").first()?.text() ?? "") ?? ""
+        guard !headline.isEmpty else { return nil }
+
+        let headlineRegex = Regex("(.+) (?:.+|A)ngebot(.*) vom")
+        let components = headlineRegex.allMatches(in: headline).first?.captures.flatMap { $0 } ?? []
+        guard components.count == 2 else { return nil }
+
+        let canteen = components[0]
+        let counter = components[1].isEmpty ? nil : components[1].trim()
+        let isEveningOffer = headline.lowercased().contains("abend")
+
+        return (canteen: canteen, counter: counter, isEveningOffer: isEveningOffer)
+    }
+
     private static func extractInfoHeaders(from doc: Document) -> [InfoSection] {
         guard let infos = try? doc.select("#speiseplandetailsrechts>h2") else { return [] }
         return infos.map { InfoSection(string: (try? $0.text()) ?? "") }
@@ -58,16 +73,21 @@ final class MealDetailScraper {
         return extractInfos(at: .allergens, from: doc)
     }
 
-    public static func scrape(document: Document, fromCanteen canteen: String, onDate date: ISODate, url: String) -> Meal {
+    public static func scrape(document: Document, url: URL, forDate date: Date) -> Meal? {
         let title = MealDetailScraper.extractTitle(from: document)
         let (studentPrice, employeePrice, isSoldOut) = MealDetailScraper.extractPrices(from: document)
         let imgURL = MealDetailScraper.extractImageURL(from: document)
+
+        guard let (canteen, counter, isEveningOffer) = MealDetailScraper.extractHeadlineInfo(from: document) else {
+            Log.error("Failed to extract meal headline info for meal: \(url.absoluteString)")
+            return nil
+        }
 
         let information = MealDetailScraper.extractInformation(from: document)
         let additives = MealDetailScraper.extractAdditives(from: document)
         let allergens = MealDetailScraper.extractAllergens(from: document)
 
-        return Meal(title: title, canteen: canteen, date: date, isSoldOut: isSoldOut, studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: url, information: information, additives: additives, allergens: allergens)
+        return Meal(title: title, canteen: canteen, date: date.dateStamp, isSoldOut: isSoldOut, counter: counter, isEveningOffer: isEveningOffer, studentPrice: studentPrice, employeePrice: employeePrice, image: imgURL, detailURL: url, information: information, additives: additives, allergens: allergens)
     }
 }
 

@@ -9,6 +9,7 @@ enum Network {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
 
+        Log.verbose("↪ \(url.absoluteString)")
         let task = session.dataTask(with: url) { data, response, error in
             guard
                 error == nil,

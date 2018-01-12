@@ -1,5 +1,6 @@
 import Foundation
 import SwiftSoup
+import Regex
 
 final class MenuScraper {
     static func menuURL(forWeek week: Week, andDay day: Day) -> URL {
@@ -15,6 +16,15 @@ final class MenuScraper {
             // And yes, oddly enough this does seem to work with 0 - 1 = -1.
         }
         return URL(string: "https://www.studentenwerk-dresden.de/mensen/speiseplan/w\(weekVal)-d\(day.stuweValue).html")!
+    }
+
+    static func extractDate(from doc: Document) -> Date? {
+        let dateStr = (try? doc.select("#spalterechtsnebenmenue > h1 > a").text()) ?? ""
+        guard !dateStr.isEmpty else { return nil }
+
+        let dateRegex = Regex("Mensa-Speiseplan vom .+, den (.+)")
+        let date = (dateRegex.allMatches(in: dateStr).first?.captures.first ?? "") ?? ""
+        return Date(menuHeadlineValue: date)
     }
 
     static func extractMenus(from doc: Document) -> Elements? {
