@@ -10,5 +10,17 @@ extension Droplet {
 
         try resource("canteens", CanteenController.self)
         try resource("meals", MealController.self)
+
+        get("search") { req in
+            guard let query: String = try req.query?.get("query") else {
+                throw Abort(.badRequest, reason: "Missing parameter `query`.")
+            }
+
+            return try Meal.makeQuery()
+                .filter(Meal.Keys.title, .contains, query)
+                .sort(Meal.Keys.date, .ascending)
+                .all()
+                .makeJSON()
+        }
     }
 }
