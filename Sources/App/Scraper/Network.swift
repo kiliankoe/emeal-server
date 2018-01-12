@@ -1,4 +1,5 @@
 import Foundation
+import Dispatch
 
 enum Network {
     static func fetch(url: URL) -> String? {
