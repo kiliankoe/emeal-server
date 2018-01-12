@@ -95,10 +95,10 @@ class Crawler {
         let meals = menu.meals.map { $0.absoluteString }
 
         do {
-            let query = try Meal.makeQuery()
-            try query.filter(Meal.Keys.date, isodate(forDay: .today, inWeek: .current))
-            try query.filter(Meal.Keys.canteen, menu.canteen)
-            let soldOutMeals = try query.all()
+            let soldOutMeals = try Meal.makeQuery()
+                .filter(Meal.Keys.date, isodate(forDay: .today, inWeek: .current))
+                .filter(Meal.Keys.canteen, menu.canteen)
+                .all()
                 .filter { !meals.contains($0.detailURL.absoluteString) }
 
             if soldOutMeals.count > 0 {
