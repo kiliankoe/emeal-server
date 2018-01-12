@@ -27,7 +27,10 @@ public class Updater {
             if Time.isDay {
                 Updater.run(jobs: [.menu(week: .current, day: .today)])
             } else {
-                guard Updater.currentDayLastRun.timeIntervalSinceNow.hours <= -3 else { return }
+                guard Updater.currentDayLastRun.timeIntervalSinceNow.hours <= -3 else {
+                    Log.verbose("skipping 💤")
+                    return
+                }
                 Updater.run(jobs: [.menu(week: .current, day: .today)])
             }
 
@@ -63,8 +66,8 @@ public class Updater {
                 for meal in pastMeals {
                     try meal.delete()
                 }
-            } catch {
-                Log.error("Failed to delete old meals.")
+            } catch let error {
+                Log.error("Failed to delete old meals: \(error)")
             }
         }
     }

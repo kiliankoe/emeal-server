@@ -73,7 +73,7 @@ class Crawler {
                     }
 
                     guard let meal = MealDetailScraper.scrape(document: document, url: url, forDate: date) else {
-                        Log.error("Failed to scrape meal details.")
+                        Log.error("Failed to scrape meal details for \(url.absoluteString)")
                         continue
                     }
 
@@ -108,7 +108,7 @@ class Crawler {
             soldOutMeals.forEach {
                 Log.debug(" - \($0.detailURL)")
                 $0.isSoldOut = true
-//                try $0.save() // Is this necessary?
+//                try $0.save() // TODO: Is this necessary?
             }
         } catch let error {
             Log.error("Error on updating sold out meals: \(error)")

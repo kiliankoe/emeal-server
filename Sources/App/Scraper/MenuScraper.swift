@@ -48,7 +48,7 @@ final class MenuScraper {
                 .flatMap { detailStr in
                     let details = String(detailStr.split(separator: "?").first ?? "")
                     guard details.hasPrefix("details") && details.hasSuffix(".html") else {
-                        Log.error("")
+                        Log.error("Malformed meal detail URL suffix: \(details)")
                         return nil
                     }
                     return String(details)
