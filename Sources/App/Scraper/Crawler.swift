@@ -105,10 +105,10 @@ class Crawler {
                 Log.debug("\(soldOutMeals.count) meals removed since last update @ \(menu.canteen):")
             }
 
-            soldOutMeals.forEach {
+            try soldOutMeals.forEach {
                 Log.debug(" - \($0.detailURL)")
                 $0.isSoldOut = true
-//                try $0.save() // TODO: Is this necessary?
+                try $0.save()
             }
         } catch let error {
             Log.error("Error on updating sold out meals: \(error)")
