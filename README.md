@@ -41,7 +41,6 @@ List out all known canteens. This information is however [bundled with the app](
 ```
 
 
-
 ### `/meals`
 
 List all meals for the current day. The query parameters `date` and `canteen` can be used with example values `2018-01-08` or `4` (canteen id) respectively to query for specific dates or canteens.
@@ -99,6 +98,15 @@ The corresponding values for the `information`, `additives` and `allergens` fiel
   ...
 ]
 ```
+
+
+### `/search`
+
+Search for a given keyword in all known meal titles. The keyword is supplied with the query parameter `query`, e.g. `http://server_url/search?query=burrito`. The response is a list of meals matching the query.
+
+### `/update`
+
+Queue an update for the application's data for a given week and day. Using this shouldn't be necessary in most cases, since the application updates everything itself at regular intervals, but sometimes it very well might be. In that case send a POST request to `/update` with a week and day identifier as form url-encoded body params.
 
 ## Installation
 
