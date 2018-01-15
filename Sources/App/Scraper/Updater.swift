@@ -76,7 +76,7 @@ public class Updater {
         }
     }
 
-    private static func run(jobs: [Job]) {
+    static func run(jobs: [Job]) {
         guard !jobs.isEmpty else { return }
 
         if let _ = ProcessInfo.processInfo.environment["EMEAL_CONCURRENT_CRAWLERS"] {

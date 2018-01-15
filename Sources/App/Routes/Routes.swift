@@ -22,5 +22,21 @@ extension Droplet {
                 .all()
                 .makeJSON()
         }
+
+        post("update") { req in
+            guard
+                let week = Week(rawString: try req.formURLEncoded?.get("week") ?? ""),
+                let day = Day(rawString: try req.formURLEncoded?.get("day") ?? "")
+            else {
+                throw Abort(.badRequest)
+            }
+
+            Log.info("Update request for \(week) \(day)")
+
+            let job = Job.menu(week: week, day: day)
+            Updater.run(jobs: [job])
+
+            return "Fetching data for \(week) \(day)..."
+        }
     }
 }

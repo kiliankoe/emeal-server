@@ -10,6 +10,15 @@ enum Week: Int {
     var dayOffsetToNow: Int {
         return 7 * self.rawValue
     }
+
+    init?(rawString: String) {
+        switch rawString {
+        case "current": self = .current
+        case "next": self = .next
+        case "afterNext": self = .afterNext
+        case _: return nil
+        }
+    }
 }
 
 enum Day: Int {
@@ -52,6 +61,20 @@ enum Day: Int {
     }
 
     static let all: [Day] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+
+    init?(rawString: String) {
+        switch rawString {
+        case "monday": self = .monday
+        case "tuesday": self = .tuesday
+        case "wednesday": self = .wednesday
+        case "thursday": self = .thursday
+        case "friday": self = .friday
+        case "saturday": self = .saturday
+        case "sunday": self = .sunday
+        case "today": self = .today
+        case _: return nil
+        }
+    }
 }
 
 enum Time {
