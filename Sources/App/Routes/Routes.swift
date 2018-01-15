@@ -16,6 +16,8 @@ extension Droplet {
                 throw Abort(.badRequest, reason: "Missing parameter `query`.")
             }
 
+            Log.verbose("Searching for '\(query)'")
+
             return try Meal.makeQuery()
                 .filter(Meal.Keys.title, .contains, query)
                 .sort(Meal.Keys.date, .ascending)
