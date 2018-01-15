@@ -66,10 +66,10 @@ public class Updater {
             Log.verbose("delete old data update")
             do {
                 let currentDate = isodate(forDay: .today, inWeek: .current)
-                let pastMeals = try Meal.all().filter { $0.date < currentDate }
-                for meal in pastMeals {
-                    try meal.delete()
-                }
+                try Meal.makeQuery()
+                    .filter(Meal.Keys.date, .lessThan, currentDate)
+                    .all()
+                    .forEach { try $0.delete() }
             } catch let error {
                 Log.error("Failed to delete old meals: \(error)")
             }
