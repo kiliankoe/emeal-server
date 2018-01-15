@@ -15,10 +15,14 @@ public class Updater {
     static var currentDayLastRun = Date()
 
     public static func run() {
-        // initial fetch of current week
+        // initial fetch of current and next week
         Jobs.oneoff(delay: .seconds(5)) {
-            Log.verbose("initial current week update")
-            let jobs = Day.all.map { Job.menu(week: .current, day: $0) }
+            Log.verbose("initial current and next week update")
+            let jobs = [Week.current, Week.next].flatMap { week in
+                Day.all.map { day in
+                    Job.menu(week: week, day: day)
+                }
+            }
             Updater.run(jobs: jobs)
         }
 
