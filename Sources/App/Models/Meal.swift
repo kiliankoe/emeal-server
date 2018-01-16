@@ -8,20 +8,49 @@ typealias ISODate = String
 final class Meal: Model {
     let storage = Storage()
 
-    let title: String
-    let canteen: String
-    let date: ISODate
+    var title: String
+    var canteen: String
+    var date: ISODate
 
     var isSoldOut: Bool
-    let counter: String?
-    let isEveningOffer: Bool
-    let studentPrice: Double?
-    let employeePrice: Double?
-    let image: String?
+    var counter: String?
+    var isEveningOffer: Bool
+    var studentPrice: Double?
+    var employeePrice: Double?
+    var image: String?
     let detailURL: URL
-    let information: [String]
-    let additives: [String]
-    let allergens: [String]
+    var information: [String]
+    var additives: [String]
+    var allergens: [String]
+
+    func update(from other: Meal) throws {
+        self.title = other.title
+        self.canteen = other.canteen
+        self.date = other.date
+        self.isSoldOut = other.isSoldOut
+        self.counter = other.counter
+        self.isEveningOffer = other.isEveningOffer
+        if let studentPrice = other.studentPrice {
+            self.studentPrice = studentPrice
+        }
+        if let employeePrice = other.employeePrice {
+            self.employeePrice = employeePrice
+        }
+        if let image = other.image {
+            self.image = image
+        }
+        if !other.information.isEmpty {
+            self.information = other.information
+        }
+        if !other.additives.isEmpty {
+            self.additives = other.additives
+        }
+        if !other.allergens.isEmpty {
+            self.allergens = other.allergens
+        }
+
+        try self.save()
+    }
 
     init(title: String,
          canteen: String,

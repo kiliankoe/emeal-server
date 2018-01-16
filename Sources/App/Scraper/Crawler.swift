@@ -63,13 +63,14 @@ class Crawler {
                     Log.info("#\(self.id) → \(date.dateStamp) \(day): \(mealJobs.count) meal downloads queued")
 
                 case let .meal(date: date, url: url):
+                    let previousMeal: Meal?
                     do {
-                        let meals = try Meal.makeQuery()
+                        previousMeal = try Meal.makeQuery()
                             .filter(Meal.Keys.detailURL, url)
-                            .all()
-                        try meals.forEach { try $0.delete() }
+                            .first()
                     } catch let error {
-                        Log.error("Failed deleting previous meal in db for \(url): \(error)")
+                        Log.error("Error on fetching previous meal for \(url): \(error)")
+                        continue
                     }
 
                     guard let meal = MealDetailScraper.scrape(document: document, url: url, forDate: date) else {
@@ -78,9 +79,13 @@ class Crawler {
                     }
 
                     do {
-                        try meal.save()
+                        if let previousMeal = previousMeal {
+                            try previousMeal.update(from: meal)
+                        } else {
+                            try meal.save()
+                        }
                     } catch let error {
-                        Log.error("Failed saving meal \(String(describing: meal.id)) to db: \(error)")
+                        Log.error("Failed saving/updating meal \(meal.detailURL.absoluteString): \(error)")
                         continue
                     }
                 }
