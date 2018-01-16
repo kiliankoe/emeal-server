@@ -110,18 +110,12 @@ final class Meal: Model {
         try row.set(Keys.detailURL, self.detailURL.absoluteString)
 
         let information = self.information
-            .flatMap(Meal.Information.init(value:))
-            .map { $0.identifier }
         try row.set(Keys.information, information.semicolonStr)
 
         let additives = self.additives
-            .flatMap(Meal.Additive.init(value:))
-            .map { $0.identifier }
         try row.set(Keys.additives, additives.semicolonStr)
 
         let allergens = self.allergens
-            .flatMap(Meal.Allergen.init(value:))
-            .map { $0.identifier }
         try row.set(Keys.allergens, allergens.semicolonStr)
 
         return row
