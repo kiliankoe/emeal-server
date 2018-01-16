@@ -5,7 +5,7 @@ release:
 	swift build --configuration release
 
 serve:
-	swift run Run serve
+	swift run Run serve --env=testing
 
 docker_build:
 	sudo docker build -t swift:emeal .
