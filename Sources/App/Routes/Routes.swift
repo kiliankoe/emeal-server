@@ -26,8 +26,9 @@ extension Droplet {
         }
 
         post("update") { req in
-            
-            // TODO: Only allow from rubu
+            guard req.peerHostname == "0.0.0.0" else {
+                throw Abort(.unauthorized)
+            }
             
             guard
                 let week = Week(rawString: try req.formURLEncoded?.get("week") ?? ""),
