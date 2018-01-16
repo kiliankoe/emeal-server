@@ -37,23 +37,23 @@ class MealDetailScraperTests: XCTestCase {
 
     func testExtractIngredients() {
         let ingredients1 = MealDetailScraper.extractInformation(from: document1)
-        XCTAssertEqual(ingredients1, ["Menü ist vegetarisch", "enthält Knoblauch"])
+        XCTAssertEqual(ingredients1, ["vegetarian", "garlic"])
         let ingredients2 = MealDetailScraper.extractInformation(from: document2)
-        XCTAssertEqual(ingredients2, ["enthält Schweinefleisch"])
+        XCTAssertEqual(ingredients2, ["pork"])
     }
 
     func testExtractAdditives() {
         let additives1 = MealDetailScraper.extractAdditives(from: document1)
         XCTAssertEqual(additives1, [])
         let additives2 = MealDetailScraper.extractAdditives(from: document2)
-        XCTAssertEqual(additives2, ["mit Farbstoff (1)", "mit Konservierungsstoff (2)", "mit Antioxydationsmittel (3)", "geschwefelt (5)", "mit Phosphat (8)"])
+        XCTAssertEqual(additives2, ["1", "2", "3", "5", "8"])
     }
 
     func testExtractAllergens() {
         let allergens1 = MealDetailScraper.extractAllergens(from: document1)
-        XCTAssertEqual(allergens1, ["Glutenhaltiges Getreide (A)", "Weizen (A1)", "Eier (C)", "Sellerie (I)", "Sesam (K)"])
+        XCTAssertEqual(allergens1, ["A", "A1", "C", "I", "K"])
         let allergens2 = MealDetailScraper.extractAllergens(from: document2)
-        XCTAssertEqual(allergens2, ["Glutenhaltiges Getreide (A)", "Weizen (A1)", "Roggen (A2)", "Gerste (A3)", "Eier (C)", "Milch/Milchzucker (Laktose) (G)", "Sellerie (I)", "Senf (J)", "Sesam (K)", "Sulfit/Schwefeldioxid (L)"])
+        XCTAssertEqual(allergens2, ["A", "A1", "A2", "A3", "C", "G", "I", "J", "K", "L"])
     }
 }
 
