@@ -11,6 +11,7 @@ extension Droplet {
         try config.setup()
         let drop = try Droplet(config)
         try drop.setup()
+        try config.loadCanteens()
         return drop
     }
     func serveInBackground() throws {

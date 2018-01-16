@@ -5,35 +5,52 @@ import HTTP
 @testable import Vapor
 @testable import App
 
-/// This file shows an example of testing 
-/// routes through the Droplet.
-
 class RouteTests: TestCase {
     let drop = try! Droplet.testable()
-    
-    func _testHello() throws {
-        try drop
-            .testResponse(to: .get, at: "hello")
-            .assertStatus(is: .ok)
-            .assertJSON("hello", equals: "world")
+
+    override func setUp() {
+        Testing.onFail = XCTFail
+
+        let meal = Meal(title: "meal", canteen: "canteen", date: Date().dateStamp, isSoldOut: false, counter: "counter", isEveningOffer: false, studentPrice: 1.0, employeePrice: 2.0, image: nil, detailURL: URL(string: "https://example.com")!, information: [], additives: [], allergens: [])
+        try! meal.save()
     }
 
-    func _testInfo() throws {
+    func testCanteens() throws {
         try drop
-            .testResponse(to: .get, at: "info")
+            .testResponse(to: .get, at: "canteens")
             .assertStatus(is: .ok)
-            .assertBody(contains: "0.0.0.0")
+            .assertBody(contains: "Alte Mensa")
+    }
+
+    func testMeals() throws {
+        try drop
+            .testResponse(to: .get, at: "meals")
+            .assertStatus(is: .ok)
+            .assertBody(contains: "meal")
+    }
+
+    func testSearch() throws {
+        try drop
+            .testResponse(to: .get, at: "search")
+            .assertStatus(is: .badRequest)
+
+//        try drop
+//            .testResponse(to: .get, at: "search?query=meal")
+//            .assertStatus(is: .ok)
+    }
+
+    func testUpdate() throws {
+        try drop
+            .testResponse(to: .post, at: "update", body: nil)
+            .assertStatus(is: .unauthorized)
     }
 }
 
-// MARK: Manifest
-
 extension RouteTests {
-    /// This is a requirement for XCTest on Linux
-    /// to function properly.
-    /// See ./Tests/LinuxMain.swift for examples
     static let allTests = [
-        ("testHello", _testHello),
-        ("testInfo", _testInfo),
+        ("testCanteens", testCanteens),
+        ("testMeals", testMeals),
+        ("testSearch", testSearch),
+        ("testUpdate", testUpdate),
     ]
 }

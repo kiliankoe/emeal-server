@@ -7,8 +7,7 @@ import XCTest
 XCTMain([
     // AppTests
     testCase(WeekDayTests.allTests),
-    // testCase(PostControllerTests.allTests),
-    // testCase(RouteTests.allTests),
+    testCase(RouteTests.allTests),
 
     // ScraperTests
     testCase(MenuScraperTests.allTests),
