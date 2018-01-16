@@ -47,7 +47,7 @@ List all meals for the current day. The query parameters `date` and `canteen` ca
 
 Use a canteen's id as a URL parameter, e.g. `/meals/4` to list all known meals for a given canteen. At maximum this can include the next three weeks worth of data.
 
-The corresponding values for the `information`, `additives` and `allergens` fields can be found [here](https://github.com/kiliankoe/emeal-server/blob/master/Sources/App/Models/MealInformation.swift). It is very likely that these lists are not exhaustive. Should you come across values unknown to the app, please open an issue or send a PR, thanks!
+The corresponding values for the `information` can be found [here](https://github.com/kiliankoe/emeal-server/blob/master/Sources/App/Models/MealInformation.swift). Info on listed [allergens](https://www.studentenwerk-dresden.de/mensen/faq-8.html) and [additives](https://www.studentenwerk-dresden.de/mensen/zusatzstoffe.html) is provided by the Studentenwerk.
 
 ```js
 [
@@ -107,6 +107,8 @@ Search for a given keyword in all known meal titles. The keyword is supplied wit
 ### `/update`
 
 Queue an update for the application's data for a given week and day. Using this shouldn't be necessary in most cases, since the application updates everything itself at regular intervals, but sometimes it very well might be. In that case send a POST request to `/update` with a week and day identifier as form url-encoded body params.
+
+To prevent external misuse of this endpoint, the server requires the request to come from `0.0.0.0`, e.g. localhost.
 
 ## Installation
 
