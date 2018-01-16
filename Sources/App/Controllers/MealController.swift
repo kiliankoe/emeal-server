@@ -15,9 +15,11 @@ final class MealController: ResourceRepresentable {
             try query.filter(Meal.Keys.date, Date().dateStamp)
         }
 
-        if let canteen = canteen,
+        if
+            let canteen = canteen,
             let id = Int(canteen),
-            let can = try Canteen.find(id) {
+            let can = try Canteen.find(id)
+        {
             try query.filter(Meal.Keys.canteen, can.name)
         }
 
