@@ -26,6 +26,9 @@ extension Droplet {
         }
 
         post("update") { req in
+            
+            // TODO: Only allow from rubu
+            
             guard
                 let week = Week(rawString: try req.formURLEncoded?.get("week") ?? ""),
                 let day = Day(rawString: try req.formURLEncoded?.get("day") ?? "")
