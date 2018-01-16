@@ -9,8 +9,12 @@ enum Network {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
 
+        var request = URLRequest(url: url)
+        request.addValue("emeal-server v0.1.0 <emeal@fastmail.com> https://github.com/kiliankoe/emeal-server", forHTTPHeaderField: "User-Agent")
+        request.addValue("de-DE", forHTTPHeaderField: "Accept-Language")
+
         Log.verbose("↪ \(url.absoluteString)")
-        let task = session.dataTask(with: url) { data, response, error in
+        let task = session.dataTask(with: request) { data, response, error in
             guard
                 error == nil,
                 let data = data,
