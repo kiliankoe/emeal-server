@@ -4,11 +4,7 @@ import SwiftSoup
 @testable import App
 
 class MenuScraperTests: XCTestCase {
-    var document1: Document!
-
-    override func setUp() {
-        self.document1 = try! SwiftSoup.parse(menuSource1)
-    }
+    var document1 = try! SwiftSoup.parse(menuSource1)
 
     func testExtractMenus() {
         let menus = MenuScraper.extractMenus(from: document1)!
@@ -22,10 +18,38 @@ class MenuScraperTests: XCTestCase {
         XCTAssertEqual(menus[4]!.meals.count, 0)
     }
 
+    func testMenuURL() {
+        XCTAssertEqual(
+            MenuScraper.menuURL(forWeek: .current, andDay: .monday, today: .monday).absoluteString,
+            "https://www.studentenwerk-dresden.de/mensen/speiseplan/w0-d1.html")
+        XCTAssertEqual(
+            MenuScraper.menuURL(forWeek: .next, andDay: .wednesday, today: .tuesday).absoluteString,
+            "https://www.studentenwerk-dresden.de/mensen/speiseplan/w1-d3.html")
+        XCTAssertEqual(
+            MenuScraper.menuURL(forWeek: .afterNext, andDay: .sunday, today: .saturday).absoluteString,
+            "https://www.studentenwerk-dresden.de/mensen/speiseplan/w2-d0.html")
+        XCTAssertEqual(
+            MenuScraper.menuURL(forWeek: .next, andDay: .sunday, today: .sunday).absoluteString,
+            "https://www.studentenwerk-dresden.de/mensen/speiseplan/w0-d0.html")
+    }
+
+    func testExtractDate() {
+        XCTAssertEqual(
+            MenuScraper.extractDate(from: document1)?.dateStamp,
+            "2017-12-21")
+    }
+
+    func testExtractCanteensAndMeals() {
+        let menus = MenuScraper.extractCanteensAndMeals(from: document1)
+        XCTAssertEqual(menus.count, 19)
+    }
 }
 
 extension MenuScraperTests {
     static let allTests = [
         ("testExtractMenus", testExtractMenus),
+        ("testMenuURL", testMenuURL),
+        ("testExtractDate", testExtractDate),
+        ("testExtractCanteensAndMeals", testExtractCanteensAndMeals),
     ]
 }

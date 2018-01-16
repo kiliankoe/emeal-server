@@ -3,9 +3,9 @@ import SwiftSoup
 import Regex
 
 final class MenuScraper {
-    static func menuURL(forWeek week: Week, andDay day: Day) -> URL {
+    static func menuURL(forWeek week: Week, andDay day: Day, today: Day = .today) -> URL {
         var weekVal = week.rawValue
-        if day == .sunday && Day.today == .sunday {
+        if day == .sunday && today == .sunday {
             // There appears to be a bug in the Studentenwerk's server code, where the URL scheme
             // breaks on sundays. Specifically 'w0-d0' does not reference the current week's sunday
             // when being accessed on a sunday, but the next one. This might be intended behavior,
