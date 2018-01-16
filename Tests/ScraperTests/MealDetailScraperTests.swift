@@ -4,13 +4,8 @@ import SwiftSoup
 @testable import App
 
 class MealDetailScraperTests: XCTestCase {
-    var document1: Document!
-    var document2: Document!
-
-    override func setUp() {
-        self.document1 = try! SwiftSoup.parse(mealDetailSource1)
-        self.document2 = try! SwiftSoup.parse(mealDetailSource2)
-    }
+    var document1 = try! SwiftSoup.parse(mealDetailSource1)
+    var document2 = try! SwiftSoup.parse(mealDetailSource2)
 
     func testExtractMealTitle() {
         let title1 = MealDetailScraper.extractTitle(from: document1)
@@ -21,8 +16,8 @@ class MealDetailScraperTests: XCTestCase {
 
     func testExtractPrices() {
         let price1 = MealDetailScraper.extractPrices(from: document1)
-        XCTAssertEqual(price1.students!, 2.1, accuracy: 0.01)
-        XCTAssertEqual(price1.employees!, 3.8, accuracy: 0.01)
+        XCTAssertNil(price1.students)
+        XCTAssertNil(price1.employees)
         let price2 = MealDetailScraper.extractPrices(from: document2)
         XCTAssertEqual(price2.students!, 2.5, accuracy: 0.01)
         XCTAssertEqual(price2.employees!, 4.2, accuracy: 0.01)
@@ -33,6 +28,18 @@ class MealDetailScraperTests: XCTestCase {
         XCTAssertEqual(imgURL1, "https://bilderspeiseplan.studentenwerk-dresden.de/m18/201712/196257.jpg?date=201712181137")
         let imgURL2 = MealDetailScraper.extractImageURL(from: document2)
         XCTAssertNil(imgURL2)
+    }
+
+    func testExtractHeadlineInfo() {
+        let (canteen1, counter1, evening1) = MealDetailScraper.extractHeadlineInfo(from: document1)!
+        XCTAssertEqual(canteen1, "Alte Mensa")
+        XCTAssertEqual(counter1, "fertig 3")
+        XCTAssertFalse(evening1)
+
+        let (canteen2, counter2, evening2) = MealDetailScraper.extractHeadlineInfo(from: document2)!
+        XCTAssertEqual(canteen2, "Mensa Reichenbachstraße")
+        XCTAssertEqual(counter2, "fertig 2")
+        XCTAssertTrue(evening2)
     }
 
     func testExtractIngredients() {
@@ -55,6 +62,14 @@ class MealDetailScraperTests: XCTestCase {
         let allergens2 = MealDetailScraper.extractAllergens(from: document2)
         XCTAssertEqual(allergens2, ["A", "A1", "A2", "A3", "C", "G", "I", "J", "K", "L"])
     }
+
+    func testScrapeAll() {
+        let meal1 = MealDetailScraper.scrape(document: document1, url: URL(string: "https://example.com")!, forDate: Date())
+        XCTAssertNotNil(meal1)
+
+        let meal2 = MealDetailScraper.scrape(document: document1, url: URL(string: "https://example.com")!, forDate: Date())
+        XCTAssertNotNil(meal2)
+    }
 }
 
 extension MealDetailScraperTests {
@@ -62,6 +77,7 @@ extension MealDetailScraperTests {
         ("testExtractMealTitle", testExtractMealTitle),
         ("testExtractPrices", testExtractPrices),
         ("testExtractImageURL", testExtractImageURL),
+        ("testExtractHeadlineInfo", testExtractHeadlineInfo),
         ("testExtractIngredients", testExtractIngredients),
         ("testExtractAdditives", testExtractAdditives),
         ("testExtractAllergens", testExtractAllergens),

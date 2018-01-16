@@ -76,8 +76,7 @@ $(document).ready(function() { $("a#essenfoto").fancybox({'transitionIn' : 'elas
 <div id="speiseplandetails">
 <h1>Alte Mensa Angebot fertig 3 vom Donnerstag, den 14.12.17</h1><div id="speiseplandetailslinks"><div id="essenbild"><a href="//bilderspeiseplan.studentenwerk-dresden.de/m18/201712/196257.jpg?date=201712181137" id="essenfoto" rel="external" title="Karotten-Sesamschnitzel mit Püree von Roten Linsen mit Tomate, Rosine, Minze und Ingwer, dazu Blumenkohlsalat"><img src="//bilderspeiseplan.studentenwerk-dresden.de/m18/201712/thumbs/196257.jpg?date=201712181137" alt="Karotten-Sesamschnitzel mit Püree von Roten Linsen mit Tomate, Rosine, Minze und Ingwer, dazu Blumenkohlsalat"/></a></div><div id="speiseplanessentext">Karotten-Sesamschnitzel mit Püree von Roten Linsen mit Tomate, Rosine, Minze und Ingwer, dazu Blumenkohlsalat</div><div id="preise">
 <h2>Preise<sup>[1]</sup>:</h2>
-Studierende: 2,10 &euro;
-&nbsp; Bedienstete: 3,80 &euro;
+<i>Diese Speise ist bereits ausverkauft.</i>
 </div></div><div id="speiseplandetailsrechts"><h2>Allgemeine Informationen zur Speise:</h2><ul class="speiseplaninfos"><li>Menü ist vegetarisch</li>
 <li>enthält Knoblauch</li></ul><h2>Infos zu enthaltenen Allergenen<sup>[2]</sup>:</h2><ul class="speiseplaninfos"><li>Glutenhaltiges Getreide (A)</li><li>Weizen (A1)</li><li>Eier (C)</li><li>Sellerie (I)</li><li>Sesam (K)</li></ul></div><div class="clearly" style="padding:10px 0 10px 20px;">Auf unserer Website finden Sie weitere Informationen zu <a href="../zusatzstoffe.html">Zusatzstoffen</a>, <a href="../faq-8.html">Allergenen(FAQ)</a> und <a href="../oekologie-qualitaet.html">Nachhaltigkeit</a>.</div>            <div class="clearly">&nbsp;</div>
 </div>
@@ -178,7 +177,7 @@ this.target = '_blank';
 <div id="spalterechtsnebenmenue">
 
 <div id="speiseplandetails">
-<h1>Alte Mensa Angebot fertig 2 vom Dienstag, den 19.12.17</h1><div id="speiseplandetailslinks"><div id="essenbild"><img src="../../images/speiseplan/noimage.png" alt="Noch kein Foto verfügbar"/></div><div id="speiseplanessentext">Burger mit Kassler, Malzbierzwiebeln, Pflaumen-Senf-Mayo und Gouda, dazu Salat</div><div id="preise">
+<h1>Mensa Reichenbachstraße Abendangebot fertig 2 vom Dienstag, den 19.12.17</h1><div id="speiseplandetailslinks"><div id="essenbild"><img src="../../images/speiseplan/noimage.png" alt="Noch kein Foto verfügbar"/></div><div id="speiseplanessentext">Burger mit Kassler, Malzbierzwiebeln, Pflaumen-Senf-Mayo und Gouda, dazu Salat</div><div id="preise">
 <h2>Preise<sup>[1]</sup>:</h2>
 Studierende: 2,50 &euro;
 &nbsp; Bedienstete: 4,20 &euro;
