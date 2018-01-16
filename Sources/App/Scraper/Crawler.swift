@@ -52,7 +52,15 @@ class Crawler {
                             // being sold out. Some canteens explicitly mark meals as being sold
                             // out, others just seem to remove them. This should help make all that
                             // a little more homogenous.
-                            self.updateSoldOutMeals(menu)
+                            self.updateSoldOutMeals(menu, date: date.dateStamp)
+                        } else {
+                            // In other cases delete the leftovers, since they're no longer relevant
+                            do {
+                                try self.leftovers(menu, date: date.dateStamp)
+                                    .forEach { try $0.delete() }
+                            } catch let error {
+                                Log.error("Failed deleting future leftovers: \(error)")
+                            }
                         }
 
                         return meals
@@ -99,15 +107,9 @@ class Crawler {
     }
 
     /// Given a list of meals, get all of today's meals not included and mark them as being soldOut
-    private func updateSoldOutMeals(_ menu: (canteen: String, meals: [URL])) {
-        let meals = menu.meals.map { $0.absoluteString }
-
+    private func updateSoldOutMeals(_ menu: (canteen: String, meals: [URL]), date: ISODate) {
         do {
-            let soldOutMeals = try Meal.makeQuery()
-                .filter(Meal.Keys.date, isodate(forDay: .today, inWeek: .current))
-                .filter(Meal.Keys.canteen, menu.canteen)
-                .all()
-                .filter { !meals.contains($0.detailURL.absoluteString) }
+            let soldOutMeals = try self.leftovers(menu, date: date)
 
             if soldOutMeals.count > 0 {
                 Log.debug("\(soldOutMeals.count) meals removed since last update @ \(menu.canteen):")
@@ -121,5 +123,15 @@ class Crawler {
         } catch let error {
             Log.error("Error on updating sold out meals: \(error)")
         }
+    }
+
+    /// Given a menu and date, returns a list of meals that were saved on previous runs and are
+    /// no longer included.
+    private func leftovers(_ menu: (canteen: String, meals: [URL]), date: ISODate) throws -> [Meal] {
+        return try Meal.makeQuery()
+            .filter(Meal.Keys.date, date)
+            .filter(Meal.Keys.canteen, menu.canteen)
+            .all()
+            .filter { !menu.meals.contains($0.detailURL) }
     }
 }
