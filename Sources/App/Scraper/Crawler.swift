@@ -63,11 +63,12 @@ class Crawler {
                     Log.info("#\(self.id) → \(date.dateStamp) \(day): \(mealJobs.count) meal downloads queued")
 
                 case let .meal(date: date, url: url):
-                    let previousMeal: Meal?
+                    let previousMeals: [Meal]
                     do {
-                        previousMeal = try Meal.makeQuery()
+                        previousMeals = try Meal.makeQuery()
                             .filter(Meal.Keys.detailURL, url)
-                            .first()
+                            .filter(Meal.Keys.date, date.dateStamp)
+                            .all()
                     } catch let error {
                         Log.error("Error on fetching previous meal for \(url): \(error)")
                         continue
@@ -79,8 +80,10 @@ class Crawler {
                     }
 
                     do {
-                        if let previousMeal = previousMeal {
-                            try previousMeal.update(from: meal)
+                        if !previousMeals.isEmpty {
+                            try previousMeals.forEach {
+                                try $0.update(from: meal)
+                            }
                         } else {
                             try meal.save()
                         }
