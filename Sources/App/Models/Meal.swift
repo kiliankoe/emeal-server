@@ -187,7 +187,7 @@ extension Meal: JSONConvertible {
         try json.set(Keys.studentPrice, self.studentPrice)
         try json.set(Keys.employeePrice, self.employeePrice)
         try json.set(Keys.image, self.image)
-        try json.set(Keys.detailURL, self.detailURL)
+        try json.set(Keys.detailURL, self.detailURL.absoluteString)
         try json.set(Keys.information, self.information)
         try json.set(Keys.additives, self.additives)
         try json.set(Keys.allergens, self.allergens)
