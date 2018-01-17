@@ -4,8 +4,6 @@
 
 This is a minimal webapp to function as a proxy between anything requiring meal data (e.g. your app, chatbot, etc.) and the [canteen menu](https://www.studentenwerk-dresden.de/mensen/speiseplan/) of the Studentwerk Dresden. It's powered by [Vapor](https://vapor.codes) and runs on Swift.
 
-At the current time this is very much still a work in progress.
-
 🍲✌️
 
 ## Usage
