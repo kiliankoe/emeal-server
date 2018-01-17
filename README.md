@@ -108,7 +108,7 @@ Search for a given keyword in all known meal titles. The keyword is supplied wit
 
 Queue an update for the application's data for a given week and day. Using this shouldn't be necessary in most cases, since the application updates everything itself at regular intervals, but sometimes it very well might be. In that case send a POST request to `/update` with a week and day identifier as form url-encoded body params.
 
-To prevent external misuse of this endpoint, the server requires the request to come from `0.0.0.0`, e.g. localhost.
+To prevent external misuse of this endpoint, the server requires the request to come from `0.0.0.0`, e.g. localhost. An `update` script is provided for convenience. It is supplied with the week and day identifiers, e.g. `./update current monday` and basically just `curl`s the running server with the given commands.
 
 ## Installation
 
