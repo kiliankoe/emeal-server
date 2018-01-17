@@ -1,6 +1,6 @@
 # 🌯 emeal-server
 
-[![Travis](https://img.shields.io/travis/kiliankoe/emeal-server.svg?style=flat-square)](https://travis-ci.org/kiliankoe/emeal-server)
+[![Travis](https://img.shields.io/travis/HTWDD/emeal-server.svg?style=flat-square)](https://travis-ci.org/HTWDD/emeal-server)
 
 This is a minimal webapp to function as a proxy between anything requiring meal data (e.g. your app, chatbot, etc.) and the [canteen menu](https://www.studentenwerk-dresden.de/mensen/speiseplan/) of the Studentwerk Dresden. It's powered by [Vapor](https://vapor.codes) and runs on Swift.
 
