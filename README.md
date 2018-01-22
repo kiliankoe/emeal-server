@@ -1,6 +1,8 @@
 # 🌯 emeal-server
 
 [![Travis](https://img.shields.io/travis/HTWDD/emeal-server.svg?style=flat-square)](https://travis-ci.org/HTWDD/emeal-server)
+[![Docker Build Status](https://img.shields.io/docker/build/htwdd/emeal-server.svg?style=flat-square)](https://hub.docker.com/r/htwdd/emeal-server/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/htwdd/emeal-server.svg?style=flat-square)](https://hub.docker.com/r/htwdd/emeal-server/)
 
 This is a minimal webapp to function as a proxy between anything requiring meal data (e.g. your app, chatbot, etc.) and the [canteen menu](https://www.studentenwerk-dresden.de/mensen/speiseplan/) of the Studentwerk Dresden. It's powered by [Vapor](https://vapor.codes) and runs on Swift.
 
@@ -110,4 +112,4 @@ To prevent external misuse of this endpoint, the server requires the request to 
 
 ## Installation
 
-A `Dockerfile` exists to make installation and deployment of this app as easy as possible. Otherwise it can be built and deployed like any other [Vapor](https://vapor.codes) application.
+The recommended way of installation is via docker, just run `$ docker pull htwdd/emeal-server` or  build locally. Otherwise it can be built and deployed like any other [Vapor](https://vapor.codes) application.
