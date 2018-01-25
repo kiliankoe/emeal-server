@@ -22,7 +22,7 @@ final class MenuScraper {
         let dateStr = (try? doc.select("#spalterechtsnebenmenue > h1 > a").text()) ?? ""
         guard !dateStr.isEmpty else { return nil }
 
-        let dateRegex = Regex("Mensa-Speiseplan vom .+, den (.+)")
+        let dateRegex = Regex("Mensa-Speiseplan vom .+,(?: den)?(.+)")
         let date = (dateRegex.allMatches(in: dateStr).first?.captures.first ?? "") ?? ""
         return Date(menuHeadlineValue: date)
     }
