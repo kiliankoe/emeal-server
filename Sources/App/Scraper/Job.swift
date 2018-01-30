@@ -19,7 +19,7 @@ enum Job {
             let content = Network.fetch(url: self.url),
             let document = try? SwiftSoup.parse(content)
         else {
-            Log.error("Failed fetching/parsing resource: \(url)")
+            Log.error("Failed fetching/parsing resource: \(url.absoluteString)")
             return nil
         }
 
