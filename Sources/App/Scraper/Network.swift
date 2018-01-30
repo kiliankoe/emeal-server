@@ -10,7 +10,7 @@ enum Network {
         let session = URLSession(configuration: config)
 
         var request = URLRequest(url: url)
-        request.addValue("emeal-server v0.1.0 <emeal@fastmail.com> https://github.com/HTWDD/emeal-server", forHTTPHeaderField: "User-Agent")
+        request.addValue("emeal-server v0.1 <emeal@fastmail.com> https://github.com/HTWDD/emeal-server", forHTTPHeaderField: "User-Agent")
         request.addValue("de-DE", forHTTPHeaderField: "Accept-Language")
 
         Log.verbose("↪ \(url.absoluteString)")
