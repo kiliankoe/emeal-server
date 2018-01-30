@@ -20,15 +20,6 @@
         }
       },
       {
-        "package": "CTLS",
-        "repositoryURL": "https://github.com/vapor/ctls.git",
-        "state": {
-          "branch": null,
-          "revision": "fddec6a4643d6e85b6bb6dc54b1b5cdbabd395d2",
-          "version": "1.1.2"
-        }
-      },
-      {
         "package": "Console",
         "repositoryURL": "https://github.com/vapor/console.git",
         "state": {
@@ -53,6 +44,15 @@
           "branch": null,
           "revision": "bf4470b9da79024aab79c85de80374f6c29e3864",
           "version": "2.1.1"
+        }
+      },
+      {
+        "package": "CTLS",
+        "repositoryURL": "https://github.com/vapor/ctls.git",
+        "state": {
+          "branch": null,
+          "revision": "fddec6a4643d6e85b6bb6dc54b1b5cdbabd395d2",
+          "version": "1.1.2"
         }
       },
       {
@@ -92,21 +92,21 @@
         }
       },
       {
-        "package": "JSON",
-        "repositoryURL": "https://github.com/vapor/json.git",
-        "state": {
-          "branch": null,
-          "revision": "5c2a62771cefdb04b1f96f4ccc52b581fe20cfb1",
-          "version": "2.2.0"
-        }
-      },
-      {
         "package": "Jobs",
         "repositoryURL": "https://github.com/BrettRToomey/Jobs",
         "state": {
           "branch": null,
           "revision": "2051cc49b64692534225ea9d347051f64ac682ee",
           "version": "1.1.2"
+        }
+      },
+      {
+        "package": "JSON",
+        "repositoryURL": "https://github.com/vapor/json.git",
+        "state": {
+          "branch": null,
+          "revision": "5c2a62771cefdb04b1f96f4ccc52b581fe20cfb1",
+          "version": "2.2.0"
         }
       },
       {
@@ -164,21 +164,21 @@
         }
       },
       {
-        "package": "SQLite",
-        "repositoryURL": "https://github.com/vapor/sqlite.git",
-        "state": {
-          "branch": null,
-          "revision": "9aceb6a0d7b1698a557647493bd78b030dad468b",
-          "version": "2.3.1"
-        }
-      },
-      {
         "package": "Sockets",
         "repositoryURL": "https://github.com/vapor/sockets.git",
         "state": {
           "branch": null,
           "revision": "f6b06982e94db71227e99c56fec5899a8526e8ad",
           "version": "2.1.0"
+        }
+      },
+      {
+        "package": "SQLite",
+        "repositoryURL": "https://github.com/vapor/sqlite.git",
+        "state": {
+          "branch": null,
+          "revision": "9aceb6a0d7b1698a557647493bd78b030dad468b",
+          "version": "2.3.1"
         }
       },
       {
