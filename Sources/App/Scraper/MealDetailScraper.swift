@@ -67,17 +67,11 @@ final class MealDetailScraper {
     }
 
     static func extractAdditives(from doc: Document) -> [String] {
-        let parensRegex = Regex("\\((..?)\\)")
-        return extractInfos(at: .additives, from: doc).flatMap { allergen in
-            parensRegex.firstMatch(in: allergen)?.captures.first ?? ""
-        }
+        return extractInfos(at: .additives, from: doc)
     }
 
     static func extractAllergens(from doc: Document) -> [String] {
-        let parensRegex = Regex("\\((..?)\\)")
-        return extractInfos(at: .allergens, from: doc).flatMap { allergen in
-            parensRegex.firstMatch(in: allergen)?.captures.first ?? ""
-        }
+        return extractInfos(at: .allergens, from: doc)
     }
 
     public static func scrape(document: Document, url: URL, forDate date: Date) -> Meal? {
